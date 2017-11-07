@@ -4,8 +4,8 @@ include 'cloud_music.php';
 include 'wechat.class.php';
 
 $options = array(
-        'token'=>'cgddgc', //填写你设定的key
-        'encodingaeskey'=>'gxdzero1011' //填写加密用的EncodingAESKey，如接口为明文模式可忽略
+        'token'=>'cgddgc' //填写你设定的key
+        //'encodingaeskey'=>'gxdzero1011' //填写加密用的EncodingAESKey，如接口为明文模式可忽略
     );
 $weObj = new Wechat($options);
 $weObj->valid();//明文或兼容模式可以在接口验证通过后注释此句，但加密模式一定不能注释，否则会验证失败
@@ -16,22 +16,21 @@ responseMsg($type,$options);
 #class Wechat_my extends Wechat {
     function responseMsg($type,$options){
                 $weObj=new Wechat($options);
-                $postObj=$weObj->getRev();
-                $keyword = trim($weObj->getRevContent());
+                $keyword = $weObj->getRevContent();
                 $fromusername = $weObj->getRevFrom();
                 switch($type) {
                     case Wechat::MSGTYPE_TEXT:
                             record($keyword, $fromusername);
-                            $weObj->reply(respon($postObj,$keyword,$options));
+                            $weObj->reply(respon($keyword,$options));
                             exit;
                             break;
                     case Wechat::MSGTYPE_VOICE:
                             $keyword = $weObj->getRevContent();
-                            $keyword = str_replace("！", "", $keyword);
+                            $keyword = str_replace("!", "", $keyword);
                             record($keyword, $fromusername);
-                            $weObj->reply(respon($postObj,$keyword,$options));
+                            $weObj->reply(respon($keyword,$options));
                     case Wechat::MSGTYPE_EVENT:
-                            $weObj->reply(receiveEvent($postObj,$options));
+                            $weObj->reply(receiveEvent($options));
                             break;
                     case Wechat::MSGTYPE_IMAGE:
                             break;
@@ -41,41 +40,26 @@ responseMsg($type,$options);
 
         }
         /**********************消息处理函数***********************/
-    function respon($object, $keyword,$options){
-		$weObj=new Wechat($options);
-                $funcFlag = 0;
+    function respon($keyword,$options){
+	           	$weObj=new Wechat($options);
                 $temp=substr($keyword,0,1);
                 switch($temp){
                     case ".":
                         $keyword=str_replace(".","",$keyword);
-                        $resultStr=linux_comman($keyword,$object,$options);
+                        $resultStr=linux_comman($keyword,$options);
                     break;
                     case "/":
                         $keyword=str_replace("/","",$keyword);
-                        $resultStr=bdsearch($keyword,$object,$options);
+                        $resultStr=bdsearch($keyword,$options);
                     break;
                     default:
                         $key=strstr($keyword, "点歌");
-                        $keyword = $keyword;
                         if($key<>""){
-                            $resultStr=getmusic($object, $keyword,$options);
+                            $resultStr=getmusic($keyword,$options);
                         }
                         else
                         {  
-                            /* $temp = robot($keyword,$object);
-                            $contentStr = implode("",array($temp[1],$temp[2]));
-                            $resultStr=$this->constructText($object, $contentStr, $funcFlag);
-                            /*$contentStr = robot1($keyword); //机器人1号
-                            $textTpl = "<xml>                                    
-                                        <ToUserName><![CDATA[%s]]></ToUserName>
-                                        <FromUserName><![CDATA[%s]]></FromUserName>
-                                        <CreateTime>%s</CreateTime>
-                                        <MsgType><![CDATA[text]]></MsgType>
-                                        <Content><![CDATA[%s]]></Content>
-                                        <FuncFlag>%d</FuncFlag>
-                                        </xml>"; 
-                            $resultStr = sprintf($textTpl, $object->FromUserName, $object->ToUserName, time(), $contentStr, 0);*/
-                            $resultStr = robot($keyword, $object,$options);
+                            $resultStr = robot($keyword,$options);
                         }
                     break;
                     }
@@ -86,13 +70,14 @@ responseMsg($type,$options);
 
 
         /**********************事件处理函数*************************/
-    function receiveEvent($object,$options){
-		$weObj=new Wechat($options);
-              $contentStr= "";
-              $event = $weObj->getRevEvent()['event'];
+    function receiveEvent($options){
+            $weObj=new Wechat($options);
+            $contentStr= "";
+            $even = $weObj->getRevEvent();
+            $event = $even['event'];
                 if($event == "CLICK")
                 {
-                    $event=$weObj->getRevEvent()['key'];
+                    $event=$even['key'];
                 }
               switch ($event){
                 case "subscribe":
@@ -110,8 +95,9 @@ responseMsg($type,$options);
 
             
         /**********************点歌系统函数*************************/    
-    function getmusic($postObj, $keyword,$options)    //
-                {       
+    function getmusic($keyword,$options)    //
+                {   
+                    $weObj=new Wechat($options);
                     $key = str_replace("点歌","", $keyword);
                     $art="";
                     if(strstr($key,"*")<>"")
@@ -121,28 +107,9 @@ responseMsg($type,$options);
                     $art=str_replace("*","",strstr($key,"*"));
                     $key=$word;
                      }
-                    //$keywordc= urlencode($key);
                     $musicurl="";
                     $musicurl=get_musicUrl($key,10,$art);
                     $artist=get_artist($key,10,$art);
-                   /* $musicapi = "http://box.zhangmen.baidu.com/x?op=12&count=1&title={$keywordc}\$\$"; 
-                    $simstr=file_get_contents($musicapi);
-                    $musicobj=simplexml_load_string($simstr);
-                    $i=0;
-                    $musicurl="none";
-                    foreach($musicobj->url as $itemobj)
-                    {
-                        $encode = $itemobj->encode;
-                        $decode = $itemobj->decode;  
-                        $removedecode = end(explode('&', $decode));
-                        if($removedecode<>"")
-                        {
-                            $removedecode="&".$removedecode;   
-                        }
-                        $decode = str_replace($removedecode,"", $decode);
-                        $musicurl= str_replace(end(explode('/', $encode)) ,$decode,$encode);
-                        break;
-                    }*/
                if($musicurl == "")       //没有找到音乐资源
                { 
                 $contentStr = "啊哦，没找到这首歌，听歌请输入\"点歌\"+歌名,想要指定歌手可以在后面加\"\"+歌手名字，如\"点歌告白气球*周二珂\"";

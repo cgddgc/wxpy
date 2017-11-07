@@ -24,11 +24,11 @@ function get_access_token($appid,$appsecret)    //获取access_token的函数
 
 /*************聊天机器人接口**************/
 
-function robot($keyword,$object,$options)
+function robot($keyword,$options)
 {
     $weObj=new Wechat($options);
     $fromusername = $weObj->getRevFrom();
-    $userid = substr($fromusername ,15);
+    $userid = $fromusername;//substr($fromusername ,15);
     $userid = urlencode($userid);
     $content = urlencode($keyword);
     $url="http://www.tuling123.com/openapi/api?key=b8bb8bf591af8b522652fc2aa1e4a03a&info=$content&userid=$userid"; 
@@ -51,7 +51,7 @@ function robot($keyword,$object,$options)
     {
         case "100000":
             $contentStr = $jsoninfo["text"];
-        $resultStr = $weObj->text($contentStr);
+            $resultStr = $weObj->text($contentStr);
         break;
         case "200000":
             $contentStr = $jsoninfo["text"];
@@ -98,10 +98,9 @@ function record($keyword, $fromusername)
 
 /*******************Linux命令查询函数*********************/
 
-function linux_comman($keyword,$object,$options){
+function linux_comman($keyword,$options){
     $weObj=new Wechat($options);
     $url="http://linux.51yip.com/search/$keyword";
-    //$result=file_get_contents($url);
     $time=time();
     $title="Linux命令之：$keyword";
     $description="好好看,好好学\n这个命令呢是这样的";
@@ -113,7 +112,7 @@ function linux_comman($keyword,$object,$options){
 
 /*********************百度云资源查询函数*****************/
 
-function bdsearch($keyword,$object,$options){
+function bdsearch($keyword,$options){
     $weObj=new Wechat($options);
     $contentStr=shell_exec("python movice.py $keyword");
     $time=time();
