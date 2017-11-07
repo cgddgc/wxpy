@@ -8,10 +8,55 @@ $options = array(
         //'encodingaeskey'=>'gxdzero1011' //填写加密用的EncodingAESKey，如接口为明文模式可忽略
     );
 $weObj = new Wechat($options);
-$weObj->valid();//明文或兼容模式可以在接口验证通过后注释此句，但加密模式一定不能注释，否则会验证失败
+//$weObj->valid();//明文或兼容模式可以在接口验证通过后注释此句，但加密模式一定不能注释，否则会验证失败
 $type = $weObj->getRev()->getRevType();
 #$rep=new Wechat;
-responseMsg($type,$options);
+
+if (isset($_GET['echostr']))   //token验证
+    {
+        valid();
+    }
+else
+    {
+        responseMsg();
+    }
+
+//responseMsg($type,$options);
+
+/**********************token验证函数*************************/
+  function valid()
+    {
+        $echoStr = $_GET["echostr"];
+        if($this->checkSignature())
+        {
+            echo $echoStr;
+            exit;
+        }
+    }
+
+    function checkSignature()   
+    {
+        $signature = $_GET["signature"];
+        $timestamp = $_GET["timestamp"];
+        $nonce = $_GET["nonce"];
+
+        $token = TOKEN;
+        $tmpArr = array($token, $timestamp, $nonce);
+        sort($tmpArr);
+        $tmpStr = implode( $tmpArr );
+        $tmpStr = sha1( $tmpStr );
+
+        if( $tmpStr == $signature )
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+/**********************token验证函数*************************/
+
 
 #class Wechat_my extends Wechat {
     function responseMsg($type,$options){
