@@ -27,7 +27,7 @@ else
   function Valid()
     {
         $echoStr = $_GET["echostr"];
-        if($this->checkSignature())
+        if(checkSignature())
         {
             echo $echoStr;
             exit;
