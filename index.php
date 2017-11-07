@@ -4,7 +4,7 @@ include 'cloud_music.php';
 include 'wechat.class.php';
 define("TOKEN", "zzzero"); 
 $options = array(
-        'token'=>'zzzero' //填写你设定的key
+        'token'=>'zzzero'//填写你设定的key
         //'encodingaeskey'=>'gxdzero1011' //填写加密用的EncodingAESKey，如接口为明文模式可忽略
     );
 $weObj = new Wechat($options);
@@ -14,17 +14,17 @@ $type = $weObj->getRev()->getRevType();
 
 if (isset($_GET['echostr']))   //token验证
     {
-        valid();
+        Valid();
     }
 else
     {
-        responseMsg();
+        responseMsg($type,$options);
     }
 
 //responseMsg($type,$options);
 
 /**********************token验证函数*************************/
-  function valid()
+  function Valid()
     {
         $echoStr = $_GET["echostr"];
         if($this->checkSignature())
