@@ -2,7 +2,7 @@
 include 'config.php';//要调用的函数
 include 'cloud_music.php';
 include 'wechat.class.php';
-
+define("TOKEN", "zzzero"); 
 $options = array(
         'token'=>'zzzero' //填写你设定的key
         //'encodingaeskey'=>'gxdzero1011' //填写加密用的EncodingAESKey，如接口为明文模式可忽略
