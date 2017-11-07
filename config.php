@@ -76,7 +76,7 @@ function robot($keyword,$options)
             $resultStr = $weObj->news($newsdata);
             break;
         default:
-            $resultStr=$weObj->text($jsoninfo["text"])
+            $resultStr=$weObj->text($jsoninfo["text"]);
             break;
     }
     return $resultStr;
