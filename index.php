@@ -3,14 +3,9 @@
 #include 'cloud_music.php';
 include 'wechat.class.php';
 #define("TOKEN", "zzzero"); 
-$options = array('token'=>'zzzero');
-$we = new mywechat($options);
-$wechat=new Wechat($options);
-$wechat->valid();//明文或兼容模式可以在接口验证通过后注释此句，但加密模式一定不能注释，否则会验证失败
-$type = $wechat->getRev()->getRevType();
-$we->responseMsg($type,$options);
 
-class mywechat{
+
+class mywechat extends Wechat{
     public function __construct($options){
         $weObj=new Wechat($options);
     }
@@ -398,4 +393,12 @@ class music{
         return $artist;
     }
 }
+
+$options = array('token'=>'zzzero');
+$we = new mywechat($options);
+#$wechat=new Wechat($options);
+$we->valid();//明文或兼容模式可以在接口验证通过后注释此句，但加密模式一定不能注释，否则会验证失败
+$type = $we->getRev()->getRevType();
+$we->responseMsg($type,$options);
+
 ?>
