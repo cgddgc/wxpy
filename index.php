@@ -9,7 +9,7 @@ $we->valid();//明文或兼容模式可以在接口验证通过后注释此句�
 $type = $we->getRev()->getRevType();
 $we->responseMsg($type,$options);
 
-class mywechat extends Wechat{
+class mywechat extends \Wechat{
     public function __construct($options){
         $weObj=new Wechat($options);
     }
