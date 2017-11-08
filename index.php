@@ -7,15 +7,15 @@ include 'wechat.class.php';
 #        'token'=>'zzzero'//填写你设定的key
         //'encodingaeskey'=>'gxdzero1011' //填写加密用的EncodingAESKey，如接口为明文模式可忽略
 #    );
+$options = array(
+        'token'=>'zzzero'//填写你设定的key
+        //'encodingaeskey'=>'gxdzero1011' //填写加密用的EncodingAESKey，如接口为明文模式可忽略
+    );
 $we = new mywechat();
 $we->valid();//明文或兼容模式可以在接口验证通过后注释此句，但加密模式一定不能注释，否则会验证失败
 $type = $we->getRev()->getRevType();
 $we->responseMsg($type,$options);
 class mywechat extends Wechat {
-    $options = array(
-        'token'=>'zzzero'//填写你设定的key
-        //'encodingaeskey'=>'gxdzero1011' //填写加密用的EncodingAESKey，如接口为明文模式可忽略
-    );
     $weObj=new Wechat($options);
     public function responseMsg($type,$options){        
                 $keyword = $weObj->getRevContent();
