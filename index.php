@@ -16,7 +16,10 @@ $we->valid();//明文或兼容模式可以在接口验证通过后注释此句�
 $type = $we->getRev()->getRevType();
 $we->responseMsg($type,$options);
 class mywechat extends Wechat {
-    $weObj=new Wechat($options);
+    public function __construct(){
+        $weObj=new Wechat($options);
+    }
+    
     public function responseMsg($type,$options){        
                 $keyword = $weObj->getRevContent();
                 $fromusername = $weObj->getRevFrom();
