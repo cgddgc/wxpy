@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 #include 'config.php';//要调用的函数
 #include 'cloud_music.php';
 include 'wechat.class.php';
@@ -8,7 +8,8 @@ $we = new mywechat;
 $we->valid();//明文或兼容模式可以在接口验证通过后注释此句，但加密模式一定不能注释，否则会验证失败
 $type = $we->getRev()->getRevType();
 $we->responseMsg($type,$options);
-class mywechat extends Wechat {
+
+class mywechat extends Wechat{
     public function __construct(){
         $weObj=new Wechat($options);
     }
@@ -226,8 +227,9 @@ class mywechat extends Wechat {
     }
 
     /*********************百度云资源查询函数*****************/
-        }
-class music {
+}
+
+class music{
     public function __construct($options){
         $this->keyword=$options;
     }
@@ -362,7 +364,8 @@ class music {
         for($i=0;$i<$limit;$i++)
         {
             $artist=$arr['result']['songs'][$i]['artists'][0]['name'];
-            if(strcasecmp($artist,$art)==0){
+            if(strcasecmp($artist,$art)==0)
+            {
                 $music_id=$arr['result']['songs'][$i]['id'];
                 //var_dump($arr['result']['songs'][$i]['artists'][0]['name']);
                 break;
