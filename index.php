@@ -6,7 +6,7 @@ include 'wechat.class.php';
 
 
 class mywechat extends Wechat{
-    public $weObj=new Wechat($options);
+    #public $weObj=new Wechat($options);
     public function __construct($options)
     {
         $this->token = isset($options['token'])?$options['token']:'';
@@ -15,35 +15,36 @@ class mywechat extends Wechat{
         $this->appsecret = isset($options['appsecret'])?$options['appsecret']:'';
         $this->debug = isset($options['debug'])?$options['debug']:false;
         $this->logcallback = isset($options['logcallback'])?$options['logcallback']:false;
+        $this->weObj = new Wechat($options);
     }
 
     public function responseMsg($type,$options){        
-                $keyword = $weObj->getRevContent();
-                $fromusername = $weObj->getRevFrom();
+                $keyword = $this->weObj->getRevContent();
+                $fromusername = $this->weObj->getRevFrom();
                 switch($type) {
                     case Wechat::MSGTYPE_TEXT:
                             record($keyword, $fromusername);
-                            $weObj->reply(respon($keyword,$options));
+                            $this->weObj->reply(respon($keyword,$options));
                             exit;
                             break;
                     case Wechat::MSGTYPE_VOICE:
-                            $keyword = $weObj->getRevContent();
+                            $keyword = $this->weObj->getRevContent();
                             $keyword = str_replace("!", "", $keyword);
                             record($keyword, $fromusername);
-                            $weObj->reply(respon($keyword,$options));
+                            $this->weObj->reply(respon($keyword,$options));
                     case Wechat::MSGTYPE_EVENT:
-                            $weObj->reply(receiveEvent($options));
+                            $this->weObj->reply(receiveEvent($options));
                             break;
                     case Wechat::MSGTYPE_IMAGE:
                             break;
                     default:
-                            $weObj->text("help info")->reply();
+                            $this->weObj->text("help info")->reply();
                 }
 
         }
         /**********************消息处理函数***********************/
     public function respon($keyword,$options){
-                #$weObj=new Wechat($options);
+                #$this->weObj=new Wechat($options);
                 $temp=substr($keyword,0,1);
                 switch($temp){
                     case ".":
@@ -73,9 +74,9 @@ class mywechat extends Wechat{
 
         /**********************事件处理函数*************************/
     public function receiveEvent($options){
-            #$weObj=new Wechat($options);
+            #$this->weObj=new Wechat($options);
             $contentStr= "";
-            $even = $weObj->getRevEvent();
+            $even = $this->weObj->getRevEvent();
             $event = $even['event'];
                 if($event == "CLICK")
                 {
@@ -89,7 +90,7 @@ class mywechat extends Wechat{
                          $contentStr = "更多功能正在开发哦，敬请期待！";
                           break;
                 }
-                $resultStr = $weObj->text($contentStr);
+                $resultStr = $this->weObj->text($contentStr);
                 return $resultStr;
             }
         /**********************事件处理函数*************************/  
@@ -100,7 +101,7 @@ class mywechat extends Wechat{
     public function getmusic($keyword,$options)    //
                 {   
                     $muobj=new music($keyword);
-                    #$weObj=new Wechat($options);
+                    #$this->weObj=new Wechat($options);
                     $key = str_replace("点歌","", $keyword);
                     $art="";
                     if(strstr($key,"*")<>"")
@@ -116,11 +117,11 @@ class mywechat extends Wechat{
                if($musicurl == "")       //没有找到音乐资源
                { 
                 $contentStr = "啊哦，没找到这首歌，听歌请输入\"点歌\"+歌名,想要指定歌手可以在后面加\"\"+歌手名字，如\"点歌告白气球*周二珂\"";
-                $resultStr = $weObj->text($contentStr);
+                $resultStr = $this->weObj->text($contentStr);
                }
                else
                {
-                    $resultStr = $weObj->music($artist."-".$key,$musicurl,$musicurl);
+                    $resultStr = $this->weObj->music($artist."-".$key,$musicurl,$musicurl);
                }
                      return $resultStr;
          
@@ -132,8 +133,8 @@ class mywechat extends Wechat{
 
     public function robot($keyword,$options)
     {
-        #$weObj=new Wechat($options);
-        $fromusername = $weObj->getRevFrom();
+        #$this->weObj=new Wechat($options);
+        $fromusername = $this->weObj->getRevFrom();
         $userid = $fromusername;//substr($fromusername ,15);
         $userid = urlencode($userid);
         $content = urlencode($keyword);
@@ -157,13 +158,13 @@ class mywechat extends Wechat{
         {
             case "100000":
                 $contentStr = $jsoninfo["text"];
-                $resultStr = $weObj->text($contentStr);
+                $resultStr = $this->weObj->text($contentStr);
             break;
             case "200000":
                 $contentStr = $jsoninfo["text"];
                 $url = $contentStr.$jsoninfo["url"];
                 $newsdata=array("0"=>array("Title"=>"","Description"=>$contentStr,"PicUrl"=>"","Url"=>$url));
-                $resultStr = $weObj->news($newsdata);
+                $resultStr = $this->weObj->news($newsdata);
             break;
             case "302000":
                    $title1 = $jsoninfo["list"][0]["article"];
@@ -179,10 +180,10 @@ class mywechat extends Wechat{
                    $newsdata=array("0"=>array("Title"=>$title1,"Description"=>$description1,"PicUrl"=>$picurl,"Url"=>$url1),
                                 "1"=>array("Title"=>$title2,"Description"=>$description2,"PicUrl"=>$picurl,"Url"=>$url2),
                                 "3"=>array("Title"=>$title3,"Description"=>$description3,"PicUrl"=>$picurl,"Url"=>$url3));
-                $resultStr = $weObj->news($newsdata);
+                $resultStr = $this->weObj->news($newsdata);
                 break;
             default:
-                $resultStr=$weObj->text($jsoninfo["text"]);
+                $resultStr=$this->weObj->text($jsoninfo["text"]);
                 break;
         }
         return $resultStr;
@@ -208,13 +209,13 @@ class mywechat extends Wechat{
     /*******************Linux命令查询函数*********************/
 
     public function linux_comman($keyword,$options){
-        #$weObj=new Wechat($options);
+        #$this->weObj=new Wechat($options);
         $url="http://linux.51yip.com/search/$keyword";
         $time=time();
         $title="Linux命令之：$keyword";
         $description="好好看,好好学\n这个命令呢是这样的";
         $newsdata=array("0"=>array("Title"=>$title,"Description"=>$description,"PicUrl"=>"","Url"=>$url));
-        $resultStr = $weObj->news($newsdata);
+        $resultStr = $this->weObj->news($newsdata);
         return $resultStr;
     }
     /*******************Linux命令查询函数*********************/
@@ -222,10 +223,10 @@ class mywechat extends Wechat{
     /*********************百度云资源查询函数*****************/
 
     public function bdsearch($keyword,$options){
-        #$weObj=new Wechat($options);
+        #$this->weObj=new Wechat($options);
         $contentStr=shell_exec("python movice.py $keyword");
         $time=time();
-        $resultStr = $weObj->text($contentStr);
+        $resultStr = $this->weObj->text($contentStr);
         return $resultStr;
     }
 
