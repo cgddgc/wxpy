@@ -6,6 +6,7 @@ include 'wechat.class.php';
 
 
 class mywechat extends Wechat{
+    public $weObj=new Wechat($options);
     public function __construct($options)
     {
         $this->token = isset($options['token'])?$options['token']:'';
@@ -14,7 +15,6 @@ class mywechat extends Wechat{
         $this->appsecret = isset($options['appsecret'])?$options['appsecret']:'';
         $this->debug = isset($options['debug'])?$options['debug']:false;
         $this->logcallback = isset($options['logcallback'])?$options['logcallback']:false;
-        $weObj=new Wechat($options);
     }
 
     public function responseMsg($type,$options){        
@@ -401,7 +401,7 @@ class music{
     }
 }
 
-$options = array('token'=>'zzzero');
+$options = array('token'=>'cgddgc');
 $we = new mywechat($options);
 #$wechat=new Wechat($options);
 $we->valid();//明文或兼容模式可以在接口验证通过后注释此句，但加密模式一定不能注释，否则会验证失败
