@@ -6,9 +6,9 @@ include 'wechat.class.php';
 
 
 class mywechat extends Wechat{
-    public function __construct($options){
+    #public function __construct($options){
         $weObj=new Wechat($options);
-    }
+    #}
 
     public function responseMsg($type,$options){        
                 $keyword = $weObj->getRevContent();
