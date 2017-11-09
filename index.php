@@ -6,9 +6,16 @@ include 'wechat.class.php';
 
 
 class mywechat extends Wechat{
-    #public function __construct($options){
+    public function __construct($options)
+    {
+        $this->token = isset($options['token'])?$options['token']:'';
+        $this->encodingAesKey = isset($options['encodingaeskey'])?$options['encodingaeskey']:'';
+        $this->appid = isset($options['appid'])?$options['appid']:'';
+        $this->appsecret = isset($options['appsecret'])?$options['appsecret']:'';
+        $this->debug = isset($options['debug'])?$options['debug']:false;
+        $this->logcallback = isset($options['logcallback'])?$options['logcallback']:false;
         $weObj=new Wechat($options);
-    #}
+    }
 
     public function responseMsg($type,$options){        
                 $keyword = $weObj->getRevContent();
