@@ -56,6 +56,7 @@ class mywechat extends Wechat{
                     case "/":
                         $keyword=str_replace("/","",$keyword);
                         $resultStr=$this->bdsearch($keyword);
+                        error_log(var_dump($resultStr));
                     break;
                     default:
                         $key=strstr($keyword, "点歌");
@@ -228,7 +229,7 @@ class mywechat extends Wechat{
         #$this->weObj=new Wechat($options);
         $contentStr=shell_exec("python movice.py $keyword");
         $time=time();
-        error_log($contentStr);
+        #error_log($contentStr);
         $resultStr = $this->weObj->text($contentStr);
         return $resultStr;
     }
