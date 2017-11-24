@@ -415,5 +415,5 @@ $we->responseMsg($type);
 
 $test =new mywechat($options);
 $a=$test->respon("/python");
-var_dump($a);
+echo var_dump($a);
 ?>
