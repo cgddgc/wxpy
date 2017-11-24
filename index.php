@@ -51,6 +51,7 @@ class mywechat extends Wechat{
                     case ".":
                         $keyword=str_replace(".","",$keyword);
                         $resultStr=$this->linux_comman($keyword);
+                        error_log($resultStr);
                     break;
                     case "/":
                         $keyword=str_replace("/","",$keyword);
