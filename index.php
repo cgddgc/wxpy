@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 #include 'config.php';//要调用的函数
 #include 'cloud_music.php';
 include 'wechat.class.php';
@@ -10,30 +10,30 @@ class mywechat extends Wechat{
     public function __construct($options)
     {
         $this->token = isset($options['token'])?$options['token']:'';
-        $this->encodingAesKey = isset($options['encodingaeskey'])?$options['encodingaeskey']:'';
-        $this->appid = isset($options['appid'])?$options['appid']:'';
-        $this->appsecret = isset($options['appsecret'])?$options['appsecret']:'';
-        $this->debug = isset($options['debug'])?$options['debug']:false;
-        $this->logcallback = isset($options['logcallback'])?$options['logcallback']:false;
+        #$this->encodingAesKey = isset($options['encodingaeskey'])?$options['encodingaeskey']:'';
+        #$this->appid = isset($options['appid'])?$options['appid']:'';
+        #$this->appsecret = isset($options['appsecret'])?$options['appsecret']:'';
+        #$this->debug = isset($options['debug'])?$options['debug']:false;
+        #$this->logcallback = isset($options['logcallback'])?$options['logcallback']:false;
         $this->weObj = new Wechat($options);
     }
 
-    public function responseMsg($type,$options){        
+    public function responseMsg($type){        
                 $keyword = $this->weObj->getRevContent();
                 $fromusername = $this->weObj->getRevFrom();
                 switch($type) {
                     case Wechat::MSGTYPE_TEXT:
                             record($keyword, $fromusername);
-                            $this->weObj->reply(respon($keyword,$options));
+                            $this->weObj->reply(respon($keyword));
                             exit;
                             break;
                     case Wechat::MSGTYPE_VOICE:
                             $keyword = $this->weObj->getRevContent();
                             $keyword = str_replace("!", "", $keyword);
                             record($keyword, $fromusername);
-                            $this->weObj->reply(respon($keyword,$options));
+                            $this->weObj->reply(respon($keyword));
                     case Wechat::MSGTYPE_EVENT:
-                            $this->weObj->reply(receiveEvent($options));
+                            $this->weObj->reply(receiveEvent());
                             break;
                     case Wechat::MSGTYPE_IMAGE:
                             break;
@@ -43,26 +43,26 @@ class mywechat extends Wechat{
 
         }
         /**********************消息处理函数***********************/
-    public function respon($keyword,$options){
+    public function respon($keyword){
                 #$this->weObj=new Wechat($options);
                 $temp=substr($keyword,0,1);
                 switch($temp){
                     case ".":
                         $keyword=str_replace(".","",$keyword);
-                        $resultStr=linux_comman($keyword,$options);
+                        $resultStr=linux_comman($keyword);
                     break;
                     case "/":
                         $keyword=str_replace("/","",$keyword);
-                        $resultStr=bdsearch($keyword,$options);
+                        $resultStr=bdsearch($keyword);
                     break;
                     default:
                         $key=strstr($keyword, "点歌");
                         if($key<>""){
-                            $resultStr=getmusic($keyword,$options);
+                            $resultStr=getmusic($keyword);
                         }
                         else
                         {  
-                            $resultStr = robot($keyword,$options);
+                            $resultStr = robot($keyword);
                         }
                     break;
                     }
@@ -73,7 +73,7 @@ class mywechat extends Wechat{
 
 
         /**********************事件处理函数*************************/
-    public function receiveEvent($options){
+    public function receiveEvent(){
             #$this->weObj=new Wechat($options);
             $contentStr= "";
             $even = $this->weObj->getRevEvent();
@@ -98,9 +98,9 @@ class mywechat extends Wechat{
 
             
         /**********************点歌系统函数*************************/    
-    public function getmusic($keyword,$options)    //
+    public function getmusic($keyword)    //
                 {   
-                    $muobj=new music($keyword);
+                    $muobj=new music();
                     #$this->weObj=new Wechat($options);
                     $key = str_replace("点歌","", $keyword);
                     $art="";
@@ -131,7 +131,7 @@ class mywechat extends Wechat{
 
                 /*************聊天机器人接口**************/
 
-    public function robot($keyword,$options)
+    public function robot($keyword)
     {
         #$this->weObj=new Wechat($options);
         $fromusername = $this->weObj->getRevFrom();
@@ -208,7 +208,7 @@ class mywechat extends Wechat{
 
     /*******************Linux命令查询函数*********************/
 
-    public function linux_comman($keyword,$options){
+    public function linux_comman($keyword){
         #$this->weObj=new Wechat($options);
         $url="http://linux.51yip.com/search/$keyword";
         $time=time();
@@ -222,7 +222,7 @@ class mywechat extends Wechat{
 
     /*********************百度云资源查询函数*****************/
 
-    public function bdsearch($keyword,$options){
+    public function bdsearch($keyword){
         #$this->weObj=new Wechat($options);
         $contentStr=shell_exec("python movice.py $keyword");
         $time=time();
@@ -234,9 +234,9 @@ class mywechat extends Wechat{
 }
 
 class music{
-    public function __construct($options){
-        $this->keyword=$options;
-    }
+    #public function __construct($options){
+    #    $this->weObj=new Wechat($options);
+    #}
     public function curl_get($url)
     {
         $refer = "http://music.163.com/";
@@ -405,8 +405,8 @@ class music{
 $options = array('token'=>'cgddgc');
 $we = new mywechat($options);
 #$wechat=new Wechat($options);
-$we->valid();//明文或兼容模式可以在接口验证通过后注释此句，但加密模式一定不能注释，否则会验证失败
-$type = $we->getRev()->getRevType();
-$we->responseMsg($type,$options);
+$we->weObj->valid();//明文或兼容模式可以在接口验证通过后注释此句，但加密模式一定不能注释，否则会验证失败
+$type = $we->weObj->getRev()->getRevType();
+$we->responseMsg($type);
 
 ?>
