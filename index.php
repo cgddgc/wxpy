@@ -16,6 +16,7 @@ class mywechat extends Wechat{
         #$this->debug = isset($options['debug'])?$options['debug']:false;
         #$this->logcallback = isset($options['logcallback'])?$options['logcallback']:false;
         $this->weObj = new Wechat($options);
+        #$this->music=new music();
     }
 
     public function responseMsg($type){        
@@ -49,20 +50,20 @@ class mywechat extends Wechat{
                 switch($temp){
                     case ".":
                         $keyword=str_replace(".","",$keyword);
-                        $resultStr=linux_comman($keyword);
+                        $resultStr=$this->linux_comman($keyword);
                     break;
                     case "/":
                         $keyword=str_replace("/","",$keyword);
-                        $resultStr=bdsearch($keyword);
+                        $resultStr=$this->bdsearch($keyword);
                     break;
                     default:
                         $key=strstr($keyword, "点歌");
                         if($key<>""){
-                            $resultStr=getmusic($keyword);
+                            $resultStr=$this->getmusic($keyword);
                         }
                         else
                         {  
-                            $resultStr = robot($keyword);
+                            $resultStr = $this->robot($keyword);
                         }
                     break;
                     }
