@@ -56,7 +56,7 @@ class mywechat extends Wechat{
                     case "/":
                         $keyword=str_replace("/","",$keyword);
                         $resultStr=$this->bdsearch($keyword);
-                        error_log(var_dump($resultStr));
+                        error_log(var_dump($resultStr)["Content"]);
                     break;
                     default:
                         $key=strstr($keyword, "点歌");
