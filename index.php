@@ -23,14 +23,14 @@ class mywechat extends Wechat{
                 $fromusername = $this->weObj->getRevFrom();
                 switch($type) {
                     case Wechat::MSGTYPE_TEXT:
-                            record($keyword, $fromusername);
+                            $this->record($keyword, $fromusername);
                             $this->weObj->reply($this->respon($keyword));
                             exit;
                             break;
                     case Wechat::MSGTYPE_VOICE:
                             $keyword = $this->weObj->getRevContent();
                             $keyword = str_replace("!", "", $keyword);
-                            record($keyword, $fromusername);
+                            $this->record($keyword, $fromusername);
                             $this->weObj->reply($this->respon($keyword));
                     case Wechat::MSGTYPE_EVENT:
                             $this->weObj->reply($this->receiveEvent());
