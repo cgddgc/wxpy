@@ -51,7 +51,7 @@ class mywechat extends Wechat{
                     case ".":
                         $keyword=str_replace(".","",$keyword);
                         $resultStr=$this->linux_comman($keyword);
-                        error_log($resultStr);//,3,"/var/log/php/error.log");
+                        #error_log($resultStr);//,3,"/var/log/php/error.log");
                     break;
                     case "/":
                         $keyword=str_replace("/","",$keyword);
@@ -228,6 +228,7 @@ class mywechat extends Wechat{
         #$this->weObj=new Wechat($options);
         $contentStr=shell_exec("python movice.py $keyword");
         $time=time();
+        error_log($contentStr);
         $resultStr = $this->weObj->text($contentStr);
         return $resultStr;
     }
