@@ -55,8 +55,8 @@ class mywechat extends Wechat{
                     break;
                     case "/":
                         $keyword=str_replace("/","",$keyword);
-                        $resultStr=$this->bdsearch($keyword);
-                        echo var_dump($resultStr);
+                        $resultStr=$this->bdsearch("$keyword");
+                        var_dump($resultStr);
                     break;
                     default:
                         $key=strstr($keyword, "点歌");
@@ -413,4 +413,7 @@ $we->weObj->valid();//明文或兼容模式可以在接口验证通过后注释�
 $type = $we->weObj->getRev()->getRevType();
 $we->responseMsg($type);
 
+$test =new mywechat($options);
+$a=$test->respon("/python");
+var_dump($a);
 ?>
