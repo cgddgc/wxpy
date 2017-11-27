@@ -28,7 +28,7 @@ class mywechat extends Wechat{
                             $result=$this->respon($keyword);
                             #error_log($result);
                             #file_put_contents("index.html",$result,FILE_APPEND);
-                            $this->weObj->reply($result);
+                            $this->text("hahaha")->weObj->reply();
                             exit;
                             break;
                     case Wechat::MSGTYPE_VOICE:
