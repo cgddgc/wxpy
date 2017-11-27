@@ -34,9 +34,11 @@ class mywechat extends Wechat{
                             $keyword = $this->weObj->getRevContent();
                             $keyword = str_replace("!", "", $keyword);
                             $this->record($keyword, $fromusername);
-                            $this->weObj->reply($this->respon($keyword));
+                            $this->_msg=$this->respon($keyword);
+                            $this->weObj->reply();
                     case Wechat::MSGTYPE_EVENT:
-                            $this->weObj->reply($this->receiveEvent());
+                            $this->_msg=$this->respon($keyword);
+                            $this->weObj->reply();
                             break;
                     case Wechat::MSGTYPE_IMAGE:
                             break;
