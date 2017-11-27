@@ -3,7 +3,7 @@
 #include 'cloud_music.php';
 include 'wechat.class.php';
 #define("TOKEN", "zzzero"); 
-date_default_timezone_set("Etc/GMT-8");
+date_default_timezone_set("PRC");
 
 class mywechat extends Wechat{
     #public $weObj=new Wechat($options);
@@ -26,7 +26,7 @@ class mywechat extends Wechat{
                     case Wechat::MSGTYPE_TEXT:
                             $this->record($keyword, $fromusername);
                             $result=$this->respon($keyword);
-                            error_log(var_dump($result);
+                            error_log(var_dump($result));
                             $this->weObj->reply($result);
                             exit;
                             break;
