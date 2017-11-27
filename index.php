@@ -414,6 +414,6 @@ $type = $we->weObj->getRev()->getRevType();
 #$we->responseMsg($type);
 
 $test =new mywechat($options);
-$a=$test->respon("/python");
+$a=$test->respon(".python");
 var_dump($a);
 ?>
