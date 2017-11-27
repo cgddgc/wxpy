@@ -56,7 +56,7 @@ class mywechat extends Wechat{
                     case "/":
                         $keyword=str_replace("/","",$keyword);
                         $resultStr=$this->bdsearch("$keyword");
-                        var_dump($resultStr);
+                        #var_dump($resultStr);
                     break;
                     default:
                         $key=strstr($keyword, "点歌");
@@ -214,7 +214,6 @@ class mywechat extends Wechat{
     public function linux_comman($keyword){
         #$this->weObj=new Wechat($options);
         $url="http://linux.51yip.com/search/$keyword";
-        $time=time();
         $title="Linux命令之：$keyword";
         $description="好好看,好好学\n这个命令呢是这样的";
         $newsdata=array("0"=>array("Title"=>$title,"Description"=>$description,"PicUrl"=>"","Url"=>$url));
@@ -228,7 +227,6 @@ class mywechat extends Wechat{
     public function bdsearch($keyword){
         #$this->weObj=new Wechat($options);
         $contentStr=shell_exec("python movice.py $keyword");
-        $time=time();
         #error_log($contentStr);
         $resultStr = $this->weObj->text($contentStr);
         return $resultStr;
@@ -416,4 +414,5 @@ $type = $we->weObj->getRev()->getRevType();
 $test =new mywechat($options);
 $a=$test->respon(".python");
 var_dump($a);
+echo date();
 ?>
