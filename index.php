@@ -25,7 +25,8 @@ class mywechat extends Wechat{
                 switch($type) {
                     case Wechat::MSGTYPE_TEXT:
                             $this->record($keyword, $fromusername);
-                            $this->weObj->reply($this->respon($keyword),true);
+                            #$this->weObj->reply($this->respon($keyword),true);
+                            $this->weObj->text("help info")->reply();
                             exit;
                             break;
                     case Wechat::MSGTYPE_VOICE:
@@ -407,7 +408,7 @@ class music{
 $options = array('token'=>'jnugxd');
 $we = new mywechat($options);
 #$wechat=new Wechat($options);
-$we->weObj->valid();//明文或兼容模式可以在接口验证通过后注释此句，但加密模式一定不能注释，否则会验证失败
+#$we->weObj->valid();//明文或兼容模式可以在接口验证通过后注释此句，但加密模式一定不能注释，否则会验证失败
 $type = $we->weObj->getRev()->getRevType();
 $we->responseMsg($type);
 
