@@ -3,7 +3,7 @@
 #include 'cloud_music.php';
 include 'wechat.class.php';
 #define("TOKEN", "zzzero"); 
-date_default_timezone_set('PRC');
+date_default_timezone_set("Asia/Shanghai");
 
 class mywechat extends Wechat{
     #public $weObj=new Wechat($options);
