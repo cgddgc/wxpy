@@ -26,7 +26,7 @@ class mywechat extends Wechat{
                     case Wechat::MSGTYPE_TEXT:
                             $this->record($keyword, $fromusername);
                             $result=$this->respon($keyword);
-                            error_log(json_decode($result));
+                            error_log($result);
                             $this->weObj->reply($result);
                             exit;
                             break;
