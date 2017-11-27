@@ -411,7 +411,7 @@ $we = new mywechat($options);
 #$wechat=new Wechat($options);
 $we->weObj->valid();//明文或兼容模式可以在接口验证通过后注释此句，但加密模式一定不能注释，否则会验证失败
 $type = $we->weObj->getRev()->getRevType();
-$we->responseMsg($type);
+#$we->responseMsg($type);
 
 $test =new mywechat($options);
 $a=$test->respon("/python");
