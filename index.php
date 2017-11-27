@@ -414,5 +414,5 @@ $type = $we->weObj->getRev()->getRevType();
 $test =new mywechat($options);
 $a=$test->respon(".python");
 var_dump($a);
-echo date();
+echo time();
 ?>
