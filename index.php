@@ -25,7 +25,7 @@ class mywechat extends Wechat{
                 switch($type) {
                     case Wechat::MSGTYPE_TEXT:
                             $this->record($keyword, $fromusername);
-                            $this->weObj->reply($this->respon($keyword),true);
+                            $this->weObj->reply($this->respon($keyword));
                             #$this->weObj->text("help info")->reply();
                             exit;
                             break;
