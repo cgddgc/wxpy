@@ -230,7 +230,7 @@ class mywechat extends Wechat{
 
     public function bdsearch($keyword){
         #$this->weObj=new Wechat($options);
-        $contentStr=shell_exec("python movice.py $keyword");
+        $contentStr=shell_exec("python2.7 movice.py $keyword");
         #error_log($contentStr);
         $resultStr = $this->weObj->text($contentStr);
         return $resultStr;
