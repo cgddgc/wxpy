@@ -17,7 +17,7 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         params=json.loads(self.queryString)
         print(params)
         #s=str(self.rfile.readline().decode(),'utf-8')  
-        s=self.rfile.readline().decode()
+        s=self.rfile.readline()
         print(s)
         #print(urllib.parse.parse_qs(urllib.parse.unquote(s)))
         self.send_response(301)
