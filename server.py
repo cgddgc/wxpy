@@ -2,7 +2,7 @@
 #!coding=utf-8 
 
 from http.server import HTTPServer,BaseHTTPRequestHandler     
-import io,shutil,urllib     
+import io,shutil,urllib,json     
 
 class MyHttpHandler(BaseHTTPRequestHandler):     
     def do_GET(self):       
@@ -11,9 +11,14 @@ class MyHttpHandler(BaseHTTPRequestHandler):
             params=urllib.parse.parse_qs(self.queryString)     
             #print(params)     
         self.send_response(200)             
-    def do_POST(self):     
-        s=str(self.rfile.readline(),'utf-8')  
-        print(s) 
+    def do_POST(self):
+        self.queryString=urllib.parse.unquote(self.path.split('?',1)[1])          
+        pstr=urllib.parse.parse_qs(self.queryString)
+        params=json.loads(pstr)
+        print(params)
+        #s=str(self.rfile.readline().decode(),'utf-8')  
+        s=self.rfile.readline().decode()
+        print(s)
         print(urllib.parse.parse_qs(urllib.parse.unquote(s)))
         self.send_response(301)
 pyhttpd=HTTPServer(('',8998),MyHttpHandler)     
