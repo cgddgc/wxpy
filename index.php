@@ -416,7 +416,7 @@ $type = $we->weObj->getRev()->getRevType();
 $we->responseMsg($type);
 $users=$we->getUserList();
 echo $users;
-$pushdata={"touser"=>$users,"msgtype"=>"text","text"=>array("content"=>"hello wolrd")};
+$pushdata={"touser"=>array("odd2gjtRc-ohwDhgqi19sn5Z5kUE"),"msgtype"=>"text","text"=>array("content"=>"hello wolrd")};
 $we->sendMassMessage($pushdata);
 /*
 $test =new mywechat($options);
