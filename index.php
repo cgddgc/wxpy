@@ -2,7 +2,7 @@
 #include 'config.php';//要调用的函数
 #include 'cloud_music.php';
 include 'wechat.class.php';
-#define("TOKEN", "zzzero"); 
+
 date_default_timezone_set("PRC");
 
 class mywechat extends Wechat{
@@ -408,16 +408,12 @@ class music{
     }
 }
 
-$options = array('token'=>'jnugxd');
+$options = array('token'=>'cgddgc');
 $we = new mywechat($options);
 #$wechat=new Wechat($options);
 $we->weObj->valid();//明文或兼容模式可以在接口验证通过后注释此句，但加密模式一定不能注释，否则会验证失败
 $type = $we->weObj->getRev()->getRevType();
 $we->responseMsg($type);
-#$users=$we->getUserList();
-#echo "odd2gjtRc-ohwDhgqi19sn5Z5kUE";
-#$pushdata={"touser"=>array("odd2gjtRc-ohwDhgqi19sn5Z5kUE"),"msgtype"=>"text","text"=>array("content"=>"hello wolrd")};
-#$we->sendMassMessage($pushdata);
 /*
 $test =new mywechat($options);
 $a=$test->respon(".python");
