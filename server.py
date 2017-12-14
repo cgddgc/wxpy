@@ -19,7 +19,7 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         #s=str(self.rfile.readline().decode(),'utf-8')  
         s=self.rfile.readline().decode()
         print(s)
-        print(urllib.parse.parse_qs(urllib.parse.unquote(s)))
+        #print(urllib.parse.parse_qs(urllib.parse.unquote(s)))
         self.send_response(301)
 pyhttpd=HTTPServer(('',8998),MyHttpHandler)     
 print("Server started on 127.0.0.1,port 8998.....")     
