@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 #include 'config.php';//要调用的函数
 #include 'cloud_music.php';
 include 'wechat.class.php';
