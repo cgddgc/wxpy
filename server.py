@@ -14,8 +14,7 @@ class MyHttpHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         self.queryString=urllib.parse.unquote(self.path.split('?',1)[1])          
         pstr=urllib.parse.parse_qs(self.queryString)
-        params=json.loads(self.queryString)
-        print(params)
+        print(pstr)
         #s=str(self.rfile.readline().decode(),'utf-8')  
         s=self.rfile.readline()
         print(s)
