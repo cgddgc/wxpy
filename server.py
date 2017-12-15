@@ -31,16 +31,15 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         #print(l)
         for i in range(l):
             s[i]=s[i].decode('utf-8')#=s[l-1].decode(encoding='utf-8')
-            s[i]=s[i].replace("\n","")
         xml=''
         xml=xml.join(list(s))
-        #print(xml)
+        print(xml)
         #print(urllib.parse.parse_qs(urllib.parse.unquote(s)))
         self.send_response(301)
         self.responMsg(pstr,xml)
 
-    def valid(self):
-        pstr,xml=self.post.do_POST()
+    def valid(self,pstr,xml):
+        pstr,xml=self.do_POST()
         timestamp=pstr["timestamp"][0]
         nonce=pstr["nonce"][0]
         signature=pstr["signature"][0]
@@ -51,9 +50,9 @@ class MyHttpHandler(BaseHTTPRequestHandler):
             pass 
 
     def responMsg(self,pstr,xml):
-        signature=pstr["signature"][0]
-        nonce=pstr["nonce"][0]
-        timestam=pstr["timestamp"][0]
+        #signature=pstr["signature"][0]
+        #nonce=pstr["nonce"][0]
+        #timestam=pstr["timestamp"][0]
         msg=parse_message(xml)
         reply = TextReply(message=msg)
         reply.content = '你好啊，扑街！'
