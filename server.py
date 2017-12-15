@@ -12,6 +12,7 @@ import socket
 token='cgddgc'
 sock.bind('0.0.0.0',8998)
 sock.listen(5)
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 class MyHttpHandler(BaseHTTPRequestHandler):
     
     def do_GET(self):       
