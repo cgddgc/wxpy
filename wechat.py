@@ -12,9 +12,7 @@ def hl(message):
 @robot.image
 def h2(message):
     return message.img
-@robot.event
-def echoevent(message):
-    return message.event
+
 robot.config['HOST']='0.0.0.0'
 robot.config['PORT']=8998
 robot.run()
