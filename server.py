@@ -37,7 +37,7 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         print(xml)
         #print(urllib.parse.parse_qs(urllib.parse.unquote(s)))
         self.send_response(301)
-        self.responMsg(pstr,xml)
+        return self.responMsg(pstr,xml)
 
     def valid(self,pstr,xml):
         pstr,xml=self.do_POST()
@@ -58,9 +58,11 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         reply = TextReply(message=msg)
         reply.content = '你好啊，扑街！'
         restr=reply.render()
-        returncode=bytes(str(bytes(restr,encoding='utf-8'),encoding='utf-8').replace('\n',''),encoding='utf-8')
+        bstr=bytes(restr,encoding='utf-8')
+        returncode=bytes(str(bstr,encoding='utf-8').replace('\n',''),encoding='utf-8')
         self.wfile.write(returncode)
         print(msg,returncode)
+        return returncode
 
 
 pyhttpd=HTTPServer(('0.0.0.0',8998),MyHttpHandler)   
