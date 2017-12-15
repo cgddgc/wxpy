@@ -60,7 +60,7 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         restr=reply.render()
         returncode=bytes(restr,encoding='utf-8')
         self.wfile.write(returncode)
-        print(reply,returncode)
+        print(msg,returncode)
 
 
 pyhttpd=HTTPServer(('0.0.0.0',8998),MyHttpHandler)   
