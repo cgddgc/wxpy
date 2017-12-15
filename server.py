@@ -19,10 +19,8 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         s=self.rfile.readlines(65537)
         #s=self.request.recv(2048).strip()
         xml=''
-        for i in s:
-            i = str(i,encoding='utf-8')
-
-        print(s)
+        xml=xml.join(list(s))
+        print(xml)
         #print(urllib.parse.parse_qs(urllib.parse.unquote(s)))
         self.send_response(301)
 pyhttpd=HTTPServer(('',8998),MyHttpHandler)     
