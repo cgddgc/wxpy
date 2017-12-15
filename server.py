@@ -59,7 +59,7 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         reply.content = '你好啊，扑街！'
         restr=reply.render()
         returncode=str(bytes(restr,encoding='utf-8'),encoding='utf-8').replace('\n','')
-        self.wfile.write(returncode)
+        #self.wfile.write(returncode)
         print(msg,returncode)
 
 
