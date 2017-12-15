@@ -17,7 +17,7 @@ def responText(message):
         @robot.image
         def resp2(message):
             return message.img
-    else
+    else:
         return TulingRobot(message)
 
 
