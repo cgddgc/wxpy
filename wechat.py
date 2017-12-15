@@ -13,12 +13,12 @@ def TulingRobot(message):
 
 @robot.text
 def responText(message):
-    #print(message)
+    if (message.img):
+        @robot.image
+        def resp2(message):
+            return message.img
     return TulingRobot(message)
 
-@robot.image
-def resp2(message):
-    return message.img
 
 robot.config['HOST']='0.0.0.0'
 robot.config['PORT']=8998
