@@ -16,8 +16,8 @@ def responText(message):
     return TulingRobot(message)
 
 @robot.image
-    def resp2(message):
-        return message.img
+def resp2(message):
+    return message.img
 
 @robot.event
 def resp3(message):
