@@ -1,5 +1,5 @@
 #coding=utf-8
-import werobot,urllib,requests
+import werobot,urllib,requests,json
 
 token="cgddgc"
 
@@ -12,12 +12,12 @@ def TulingRobot(message):
     return result
 
 @robot.text
-def hl(message):
+def responText(message):
     #print(message)
     return TulingRobot(message)
 
 @robot.image
-def h2(message):
+def resp2(message):
     return message.img
 
 robot.config['HOST']='0.0.0.0'
