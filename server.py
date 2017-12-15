@@ -63,6 +63,6 @@ pyhttpd=HTTPServer(('',8998),MyHttpHandler)
 print("Server started on 127.0.0.1,port 8998.....")     
 
 we=myWechat()
-_thread.start_new_thread(we.responMsg,('',))
+_thread.start_new_thread(we.responMsg,(,))
 pyhttpd.serve_forever()
 
