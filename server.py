@@ -30,7 +30,8 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         l=len(s)
         #print(l)
         for i in range(l):
-            s[i]=s[i].decode('utf-8').replace('\n','')#=s[l-1].decode(encoding='utf-8')
+            s[i]=s[i].decode('utf-8')#=s[l-1].decode(encoding='utf-8')
+            s[i]=s[i].replace("\n","")
         xml=''
         xml=xml.join(list(s))
         #print(xml)
