@@ -21,7 +21,7 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         l=len(s)
         print(l)
         for i in range(l):
-            print(s[l-1])#=s[l-1].decode(encoding='utf-8')
+            print(s[i-1].decode())#=s[l-1].decode(encoding='utf-8')
         #xml=''
         #xml=xml.join(list(s))
         #print(xml)
