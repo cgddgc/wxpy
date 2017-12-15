@@ -18,13 +18,13 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         #s=str(self.rfile.readline().decode(),'utf-8')  
         s=self.rfile.readlines()
         #s=self.request.recv(2048).strip()
-        #l=len(s)
-        #print(l)
-        #for i in range(l):
-        #    s[l-1]=s[l-1].decode(encoding='utf-8')
-        xml=''
-        xml=xml.join(list(s))
-        print(xml)
+        l=len(s)
+        print(l)
+        for i in range(l):
+            print(s[l-1])#=s[l-1].decode(encoding='utf-8')
+        #xml=''
+        #xml=xml.join(list(s))
+        #print(xml)
         #print(urllib.parse.parse_qs(urllib.parse.unquote(s)))
         self.send_response(301)
 pyhttpd=HTTPServer(('',8998),MyHttpHandler)     
