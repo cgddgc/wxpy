@@ -55,7 +55,8 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         reply = TextReply(message=msg)
         reply.content = 'text reply'
         restr=reply.render()
-        self.wfile.write(restr)
+        #self.wfile.write(restr)
+        create_reply(restr)
         print(msg,restr)
 
 
