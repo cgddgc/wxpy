@@ -11,7 +11,7 @@ import socket
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 token='cgddgc'
-sock.bind('0.0.0.0',8998)
+sock.bind(('0.0.0.0',8998))
 sock.listen(5)
 
 class MyHttpHandler(BaseHTTPRequestHandler):
