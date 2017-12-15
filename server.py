@@ -22,9 +22,6 @@ class MyHttpHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         self.queryString=urllib.parse.unquote(self.path.split('?',1)[1])          
         pstr=urllib.parse.parse_qs(self.queryString)
-        #signature=pstr["signature"][0]
-        #nonce=pstr["nonce"][0]
-        #timestam=pstr["timestamp"][0]
         #s=str(self.rfile.readline().decode(),'utf-8')  
         s=self.rfile.readlines()
         #s=self.request.recv(2048).strip()
@@ -50,15 +47,15 @@ class MyHttpHandler(BaseHTTPRequestHandler):
             print('error')
             pass 
 
-    def responMsg(self):
-        while 1:
-            if(self.do_POST()):
-                pstr,xml=self.do_POST()
-                msg=parse_message(xml)
-                reply = TextReply(message=msg)
-                reply.content = 'text reply'
-                restr=reply.rener()
-                print(msg,restr)
+    def responMsg(self,pstr,xml):
+        signature=pstr["signature"][0]
+        nonce=pstr["nonce"][0]
+        timestam=pstr["timestamp"][0]
+        msg=parse_message(xml)
+        reply = TextReply(message=msg)
+        reply.content = 'text reply'
+        restr=reply.rener()
+        print(msg,restr)
 
 
 pyhttpd=HTTPServer(('0.0.0.0',8998),MyHttpHandler)   
