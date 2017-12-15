@@ -4,7 +4,6 @@ import werobot
 token="cgddgc"
 
 robot=werobot.WeRoBot(token=token)
-message=robot.Message
 
 @robot.text
 def hl(message):
