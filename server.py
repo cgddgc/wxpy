@@ -7,7 +7,7 @@ from wechatpy.utils import check_signature
 from wechatpy.exceptions import InvalidSignatureException
 from wechatpy import parse_message
 from wechatpy.replies import TextReply,create_reply
-import socket,sys,io
+#import socket,sys,io
 #sys.stdout=io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
 
 
@@ -20,7 +20,8 @@ class MyHttpHandler(BaseHTTPRequestHandler):
             self.queryString=urllib.parse.unquote(self.path.split('?',1)[1])          
             params=urllib.parse.parse_qs(self.queryString)     
             #print(params)     
-        self.send_response(200)             
+        self.send_response(200)
+
     def do_POST(self):
         self.queryString=urllib.parse.unquote(self.path.split('?',1)[1])          
         pstr=urllib.parse.parse_qs(self.queryString)
@@ -39,7 +40,7 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         #self.send_response(301)
         response=self.responMsg(pstr,xml)
         self.wfile.write(response)
-        self.write(response)
+        self.wfite(response)
 
     def valid(self,pstr,xml):
         pstr,xml=self.do_POST()
