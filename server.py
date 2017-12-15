@@ -40,9 +40,10 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         self.send_response(301)
 class myWechat():
     def __init__(self):
+        self.post=MyHttpHandler()
         self.token=token
     def valid(self):
-        pstr,xml=self.do_POST()
+        pstr,xml=self.post.do_POST()
         timestamp=pstr["timestamp"][0]
         nonce=pstr["nonce"][0]
         signature=pstr["signature"][0]
@@ -52,8 +53,8 @@ class myWechat():
             print('error')
             pass 
     def responMsg(self):
-        if(self.do_POST()):
-            pstr,xml=self.do_POST()
+        if(self.post.do_POST()):
+            pstr,xml=self.post.do_POST()
             msg=parse_message(xml)
             reply = TextReply(message=msg)
             reply.content = 'text reply'
@@ -63,6 +64,6 @@ pyhttpd=HTTPServer(('',8998),MyHttpHandler)
 print("Server started on 127.0.0.1,port 8998.....")     
 
 we=myWechat()
-_thread.start_new_thread(we.responMsg,('',''))
+_thread.start_new_thread(we.responMsg,('',))
 pyhttpd.serve_forever()
 
