@@ -52,17 +52,18 @@ class myWechat(MyHttpHandler):
             print('error')
             pass 
     def responMsg(self):
-        if(self.do_POST()):
-            pstr,xml=self.do_POST()
-            msg=parse_message(xml)
-            reply = TextReply(message=msg)
-            reply.content = 'text reply'
-            restr=reply.rener()
-            print(msg,restr)
+        while 1:
+            if(self.do_POST()):
+                pstr,xml=self.do_POST()
+                msg=parse_message(xml)
+                reply = TextReply(message=msg)
+                reply.content = 'text reply'
+                restr=reply.rener()
+                print(msg,restr)
 pyhttpd=HTTPServer(('',8998),MyHttpHandler)     
 print("Server started on 127.0.0.1,port 8998.....")     
 
 we=myWechat()
-_thread.start_new_thread(we.responMsg,(,))
+we.responMsg()
 pyhttpd.serve_forever()
 
