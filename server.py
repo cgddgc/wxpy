@@ -6,7 +6,7 @@ import io,shutil,urllib,json
 from wechatpy.utils import check_signature
 from wechatpy.exceptions import InvalidSignatureException
 from wechatpy import parse_message
-
+from wechatpy.replies import TextReply,create_reply
 
 
 token='cgddgc'
@@ -53,7 +53,10 @@ class MyHttpHandler(BaseHTTPRequestHandler):
     def responMsg(self):
         pstr,xml=self.do_POST()
         msg=parse_message(xml)
-        print(msg)
+        reply = TextReply(message=msg)
+        reply.content = 'text reply'
+        restr=reply.rener()
+        print(msg,restr)
 pyhttpd=HTTPServer(('',8998),MyHttpHandler)     
 print("Server started on 127.0.0.1,port 8998.....")     
 pyhttpd.serve_forever()
