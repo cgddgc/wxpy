@@ -7,10 +7,11 @@ from wechatpy.utils import check_signature
 from wechatpy.exceptions import InvalidSignatureException
 from wechatpy import parse_message
 from wechatpy.replies import TextReply,create_reply
-
+import socket
 
 token='cgddgc'
-
+sock.bind('0.0.0.0',8998)
+sock.listen(5)
 class MyHttpHandler(BaseHTTPRequestHandler):
     
     def do_GET(self):       
@@ -60,7 +61,8 @@ class MyHttpHandler(BaseHTTPRequestHandler):
                 restr=reply.rener()
                 print(msg,restr)
 pyhttpd=HTTPServer(('',8998),MyHttpHandler)     
-print("Server started on 127.0.0.1,port 8998.....")     
-pyhttpd.responMsg()
+print("Server started on 127.0.0.1,port 8998.....") 
+we=MyHttpHandler()    
+we.responMsg()
 #pyhttpd.serve_forever()
 
