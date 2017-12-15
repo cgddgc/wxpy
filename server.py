@@ -2,7 +2,7 @@
 #!coding=utf-8 
 
 from http.server import HTTPServer,BaseHTTPRequestHandler     
-import io,shutil,urllib,json     
+import io,shutil,urllib,json,threading,_thread     
 from wechatpy.utils import check_signature
 from wechatpy.exceptions import InvalidSignatureException
 from wechatpy import parse_message
@@ -60,9 +60,7 @@ class myWechat():
         print(msg,restr)
 pyhttpd=HTTPServer(('',8998),MyHttpHandler)     
 print("Server started on 127.0.0.1,port 8998.....")     
-pyhttpd.serve_forever()
-we=myWechat()
-while 1:
-    we.responMsg()
-    pass
 
+we=myWechat()
+_thread.start_new_thread(pyhttpd.serve_forever)
+_thread.start_new_thread(we.responMsg)
