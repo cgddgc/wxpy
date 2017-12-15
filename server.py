@@ -16,7 +16,7 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         pstr=urllib.parse.parse_qs(self.queryString)
         print(pstr["signature"][0],pstr["nonce"][0],pstr["timestamp"][0])
         #s=str(self.rfile.readline().decode(),'utf-8')  
-        s=self.rfile.readlines(65537)
+        s=str(self.rfile.readlines(65537),encoding="utf-8")
         #s=self.request.recv(2048).strip()
         print(s)
         #print(urllib.parse.parse_qs(urllib.parse.unquote(s)))
