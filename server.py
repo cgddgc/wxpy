@@ -55,7 +55,7 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         reply = TextReply(message=msg)
         reply.content = 'text reply'
         restr=reply.render()
-        self.wfile.write(restr)
+        self.wfile.write(restr.encode('utf-8'))
         print(msg,restr)
 
 
