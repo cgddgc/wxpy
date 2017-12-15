@@ -38,9 +38,8 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         return pstr,xml
         #print(urllib.parse.parse_qs(urllib.parse.unquote(s)))
         self.send_response(301)
-class myWechat():
+class myWechat(MyHttpHandler):
     def __init__(self):
-        self.post=MyHttpHandler()
         self.token=token
     def valid(self):
         pstr,xml=self.post.do_POST()
@@ -53,8 +52,8 @@ class myWechat():
             print('error')
             pass 
     def responMsg(self):
-        if(self.post.do_POST()):
-            pstr,xml=self.post.do_POST()
+        if(self.do_POST()):
+            pstr,xml=self.do_POST()
             msg=parse_message(xml)
             reply = TextReply(message=msg)
             reply.content = 'text reply'
