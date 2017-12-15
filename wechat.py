@@ -13,8 +13,8 @@ def TulingRobot(message):
 
 @robot.text
 def hl(message):
-    print(message)
-    return message.content+"蠢材"
+    #print(message)
+    return TulingRobot(message)
 
 @robot.image
 def h2(message):
