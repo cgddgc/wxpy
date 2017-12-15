@@ -34,9 +34,9 @@ class MyHttpHandler(BaseHTTPRequestHandler):
             s[i]=s[i].decode('utf-8')#=s[l-1].decode(encoding='utf-8')
             xml=xml+s[i]
         #xml=xml.join(list(s))
-        print(xml)
+        #print(xml)
         #print(urllib.parse.parse_qs(urllib.parse.unquote(s)))
-        self.send_response(301)
+        #self.send_response(301)
         self.wfile.write(self.responMsg(pstr,xml))
 
     def valid(self,pstr,xml):
@@ -60,7 +60,7 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         restr=reply.render()
         bstr=bytes(restr,encoding='utf-8')
         returncode=bytes(str(bstr,encoding='utf-8').replace('\n',''),encoding='utf-8')
-        self.wfile.write(returncode)
+        #self.wfile.write(returncode)
         print(msg,returncode)
         return returncode
 
