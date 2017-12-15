@@ -13,10 +13,11 @@ def TulingRobot(message):
 
 @robot.text
 def responText(message):
-    if (message.img):
+    if (message.type=='img'):
         @robot.image
         def resp2(message):
             return message.img
+    else
     return TulingRobot(message)
 
 
