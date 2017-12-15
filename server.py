@@ -25,12 +25,12 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         self.queryString=urllib.parse.unquote(self.path.split('?',1)[1])          
         pstr=urllib.parse.parse_qs(self.queryString)
         #s=str(self.rfile.readline().decode(),'utf-8')  
-        s=self.rfile.readlines().strip()
+        s=self.rfile.readlines()
         #s=self.request.recv(2048).strip()
         l=len(s)
         #print(l)
         for i in range(l):
-            s[i]=s[i].decode('utf-8')#=s[l-1].decode(encoding='utf-8')
+            s[i]=s[i].decode('utf-8').replace('\n','')#=s[l-1].decode(encoding='utf-8')
         xml=''
         xml=xml.join(list(s))
         #print(xml)
