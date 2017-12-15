@@ -54,7 +54,7 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         msg=parse_message(xml)
         reply = TextReply(message=msg)
         reply.content = 'text reply'
-        restr=reply.rener()
+        restr=reply.render()
         print(msg,restr)
 
 
