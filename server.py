@@ -18,9 +18,9 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         #s=str(self.rfile.readline().decode(),'utf-8')  
         s=self.rfile.readlines(65537)
         #s=self.request.recv(2048).strip()
+        xml=''
         for i in s:
             i = str(i,encoding='utf-8')
-            xml=''
             xml = xml.join(i)
         print(xml)
         #print(urllib.parse.parse_qs(urllib.parse.unquote(s)))
