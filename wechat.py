@@ -19,7 +19,7 @@ def responText(message):
 def resp2(message):
     return message.img
 
-@robot.event
+@robot.location
 def resp3(message):
     return message.label
 robot.config['HOST']='0.0.0.0'
