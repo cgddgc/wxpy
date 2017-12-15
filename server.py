@@ -12,7 +12,7 @@ from wechatpy.replies import TextReply,create_reply
 token='cgddgc'
 
 class MyHttpHandler(BaseHTTPRequestHandler):
-    def __init__():
+    def __init__(self):
         self.token=token
     def do_GET(self):       
         if '?' in self.path:     
