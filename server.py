@@ -21,10 +21,10 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         l=len(s)
         print(l)
         for i in range(l):
-            print(s[i-1].decode('utf-8'))#=s[l-1].decode(encoding='utf-8')
-        #xml=''
-        #xml=xml.join(list(s))
-        #print(xml)
+            s[i]=s[i].decode('utf-8')#=s[l-1].decode(encoding='utf-8')
+        xml=''
+        xml=xml.join(list(s))
+        print(xml)
         #print(urllib.parse.parse_qs(urllib.parse.unquote(s)))
         self.send_response(301)
 pyhttpd=HTTPServer(('',8998),MyHttpHandler)     
