@@ -18,7 +18,7 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         #s=str(self.rfile.readline().decode(),'utf-8')  
         s=self.rfile.readlines(65537)
         #s=self.request.recv(2048).strip()
-        l=len(s)
+        l=int(len(s))
         for i in range(l)
             s[l-1]=str[s[l-1],encoding='utf-8']
         xml=''
