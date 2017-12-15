@@ -8,7 +8,7 @@ from wechatpy.exceptions import InvalidSignatureException
 from wechatpy import parse_message
 from wechatpy.replies import TextReply,create_reply
 import socket,sys,io
-sys.stdout=io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
+#sys.stdout=io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
 
 
 token='cgddgc'
