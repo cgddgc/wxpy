@@ -12,9 +12,9 @@ class MyHttpHandler(BaseHTTPRequestHandler):
             #print(params)     
         self.send_response(200)             
     def do_POST(self):
-        self.queryString=urllib.parse.unquote(self.path.split('?',1)[1])          
-        pstr=urllib.parse.parse_qs(self.queryString)
-        print(pstr["signature"][0],pstr["nonce"][0],pstr["timestamp"][0])
+        #self.queryString=urllib.parse.unquote(self.path.split('?',1)[1])          
+        #pstr=urllib.parse.parse_qs(self.queryString)
+        #print(pstr["signature"][0],pstr["nonce"][0],pstr["timestamp"][0])
         #s=str(self.rfile.readline().decode(),'utf-8')  
         s=self.rfile.readlines()
         #s=self.request.recv(2048).strip()
