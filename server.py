@@ -37,7 +37,7 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         print(xml)
         #print(urllib.parse.parse_qs(urllib.parse.unquote(s)))
         self.send_response(301)
-        self.send_response(self.responMsg(pstr,xml))
+        self.wfile.write(self.responMsg(pstr,xml))
 
     def valid(self,pstr,xml):
         pstr,xml=self.do_POST()
