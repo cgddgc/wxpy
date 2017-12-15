@@ -12,8 +12,7 @@ from wechatpy.replies import TextReply,create_reply
 token='cgddgc'
 
 class MyHttpHandler(BaseHTTPRequestHandler):
-    def __init__(self):
-        self.token=token
+    
     def do_GET(self):       
         if '?' in self.path:     
             self.queryString=urllib.parse.unquote(self.path.split('?',1)[1])          
@@ -39,7 +38,9 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         return pstr,xml
         #print(urllib.parse.parse_qs(urllib.parse.unquote(s)))
         self.send_response(301)
-
+class myWechat():
+    def __init__(self):
+        self.token=token
     def valid(self):
         pstr,xml=self.do_POST()
         timestamp=pstr["timestamp"][0]
@@ -60,8 +61,8 @@ class MyHttpHandler(BaseHTTPRequestHandler):
 pyhttpd=HTTPServer(('',8998),MyHttpHandler)     
 print("Server started on 127.0.0.1,port 8998.....")     
 pyhttpd.serve_forever()
-autores=MyHttpHandler()
+we=myWechat()
 while 1:
-    autores.responMsg()
+    we.responMsg()
     pass
 
