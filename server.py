@@ -20,9 +20,9 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         #s=self.request.recv(2048).strip()
         for i in s:
             i = str(i,encoding='utf-8')
-        xml=''
-        xml = xml.join('',s.ToArray())
-        print(a)
+            xml=''
+            xml = xml.join(i)
+        print(xml)
         #print(urllib.parse.parse_qs(urllib.parse.unquote(s)))
         self.send_response(301)
 pyhttpd=HTTPServer(('',8998),MyHttpHandler)     
