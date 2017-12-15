@@ -38,9 +38,7 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         return pstr,xml
         #print(urllib.parse.parse_qs(urllib.parse.unquote(s)))
         self.send_response(301)
-class myWechat(MyHttpHandler):
-    def __init__(self):
-        self.token=token
+
     def valid(self):
         pstr,xml=self.post.do_POST()
         timestamp=pstr["timestamp"][0]
@@ -51,6 +49,7 @@ class myWechat(MyHttpHandler):
         except InvalidSignatureException:
             print('error')
             pass 
+
     def responMsg(self):
         while 1:
             if(self.do_POST()):
@@ -62,8 +61,6 @@ class myWechat(MyHttpHandler):
                 print(msg,restr)
 pyhttpd=HTTPServer(('',8998),MyHttpHandler)     
 print("Server started on 127.0.0.1,port 8998.....")     
-
-we=myWechat()
-we.responMsg()
-pyhttpd.serve_forever()
+pyhttpd.responMsg()
+#pyhttpd.serve_forever()
 
