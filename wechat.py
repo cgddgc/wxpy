@@ -17,8 +17,8 @@ def responText(message):
         @robot.image
         def resp2(message):
             return message.img
-    else
-    return TulingRobot(message)
+        else
+        return TulingRobot(message)
 
 
 robot.config['HOST']='0.0.0.0'
