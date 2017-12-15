@@ -61,7 +61,7 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         bstr=bytes(restr,encoding='utf-8')
         returncode=bytes(str(bstr,encoding='utf-8').replace('\n',''),encoding='utf-8')
         #self.wfile.write(returncode)
-        print(msg,returncode)
+        print(returncode)
         return returncode
 
 
