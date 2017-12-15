@@ -62,7 +62,7 @@ class MyHttpHandler(BaseHTTPRequestHandler):
                 reply.content = 'text reply'
                 restr=reply.rener()
                 print(msg,restr)
-pyhttpd=HTTPServer(('',8998),MyHttpHandler)     
+#pyhttpd=HTTPServer(('',8998),MyHttpHandler)     
 print("Server started on 127.0.0.1,port 8998.....") 
 we=MyHttpHandler()    
 we.responMsg()
