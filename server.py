@@ -40,7 +40,7 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         #self.send_response(301)
         response=self.responMsg(pstr,xml)
         self.wfile.write(response)
-        self.wfite(response)
+        self.wfile(response)
 
     def valid(self,pstr,xml):
         pstr,xml=self.do_POST()
