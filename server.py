@@ -57,10 +57,11 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         msg=parse_message(xml)
         reply = TextReply(message=msg)
         reply.content = '你好啊，扑街！'
-        restr=reply.render().replace('\n','')
+        reply=reply.replace('\n','')
+        restr=reply.render()
         returncode=bytes(restr,encoding='utf-8')
         self.wfile.write(returncode)
-        return returncode
+        print(reply,returncode)
 
 
 pyhttpd=HTTPServer(('0.0.0.0',8998),MyHttpHandler)   
