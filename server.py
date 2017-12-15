@@ -57,7 +57,7 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         msg=parse_message(xml)
         reply = TextReply(message=msg)
         reply.content = '你好啊，扑街！'
-        restr=reply.render()
+        restr=reply.render().replace('\n','')
         returncode=bytes(restr,encoding='utf-8')
         self.wfile.write(returncode)
         return returncode
