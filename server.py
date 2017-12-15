@@ -7,7 +7,9 @@ from wechatpy.utils import check_signature
 from wechatpy.exceptions import InvalidSignatureException
 from wechatpy import parse_message
 from wechatpy.replies import TextReply,create_reply
-import socket
+import socket,sys,io
+sys.stdout=io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
+
 
 token='cgddgc'
 
@@ -23,7 +25,7 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         self.queryString=urllib.parse.unquote(self.path.split('?',1)[1])          
         pstr=urllib.parse.parse_qs(self.queryString)
         #s=str(self.rfile.readline().decode(),'utf-8')  
-        s=self.rfile.readlines()
+        s=self.rfile.readlines().strip()
         #s=self.request.recv(2048).strip()
         l=len(s)
         #print(l)
