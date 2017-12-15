@@ -26,7 +26,7 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         s=self.rfile.readlines()
         #s=self.request.recv(2048).strip()
         l=len(s)
-        print(l)
+        #print(l)
         for i in range(l):
             s[i]=s[i].decode('utf-8')#=s[l-1].decode(encoding='utf-8')
         xml=''
@@ -53,10 +53,11 @@ class MyHttpHandler(BaseHTTPRequestHandler):
         timestam=pstr["timestamp"][0]
         msg=parse_message(xml)
         reply = TextReply(message=msg)
-        reply.content = 'text reply'
+        reply.content = '你好啊，扑街！'
         restr=reply.render()
-        self.wfile.write(bytes(restr,encoding='utf-8'))
-        print(msg,restr)
+        returncode=bytes(restr,encoding='utf-8')
+        self.wfile.write(returncode)
+        print(returncode)
 
 
 pyhttpd=HTTPServer(('0.0.0.0',8998),MyHttpHandler)   
