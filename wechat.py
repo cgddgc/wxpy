@@ -3,8 +3,8 @@ import werobot,urllib,requests,json
 from wxcfg import MyConfig
 
 
-robot=werobot.WeRoBot()
-robot.config['token']="cgddgc"
+robot=werobot.WeRoBot(token="cgddgc")
+
 #robot.config.from_pyfile("wxcfg.py")
 #robot.config.from_object(MyConfig)
 robot.config['HOST']='0.0.0.0'
