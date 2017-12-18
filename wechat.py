@@ -5,9 +5,10 @@ import werobot,urllib,requests,json
 
 robot=werobot.WeRoBot()
 #robot.config['token']="cgddgc"
-#robot.config['HOST']='0.0.0.0'
-#robot.config['PORT']=8998
 robot.config.from_pyfile(".weconfig")
+robot.config['HOST']='0.0.0.0'
+robot.config['PORT']=8998
+
 
 def TulingRobot(message):
     url = "http://www.tuling123.com/openapi/api"#'http://www.xiaodoubi.com/bot/chat.php'
