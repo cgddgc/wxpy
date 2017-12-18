@@ -1,9 +1,12 @@
 #coding=utf-8
 import werobot,urllib,requests,json
 
-token="cgddgc"
+#token="cgddgc"
+#robot.config['HOST']='0.0.0.0'
+#robot.config['PORT']=8998
 
-robot=werobot.WeRoBot(token=token)
+robot=werobot.WeRoBot()
+robot.config.from_pyfile(".weconfig")
 
 def TulingRobot(message):
     url = "http://www.tuling123.com/openapi/api"#'http://www.xiaodoubi.com/bot/chat.php'
@@ -22,6 +25,6 @@ def resp2(message):
 @robot.location
 def resp3(message):
     return message.label
-robot.config['HOST']='0.0.0.0'
-robot.config['PORT']=8998
+
+
 robot.run()
