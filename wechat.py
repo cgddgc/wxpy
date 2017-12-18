@@ -27,4 +27,4 @@ def resp3(message):
     return message.label
 
 
-robot.run(server='cgi')
+robot.run()
