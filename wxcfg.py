@@ -1,6 +1,6 @@
-class MyConfig(object):
+class MyConfig():
     TOKEN="cgddgc",
-    SERVER="waitress",
+    SERVER="auto",
     HOST="0.0.0.0",
     PORT=8998,
     SESSION_STORAGE=None,
