@@ -26,5 +26,5 @@ def resp2(message):
 def resp3(message):
     return message.label
 
-#robot.config['SERVER']='auto'
-robot.run()
+
+robot.run(server='twisted')
