@@ -1,6 +1,6 @@
-import weroot,urllib,requests,json
+import werobot,urllib,requests,json
 
 
 we=werobot.WeRoBot()
 we.config.from_pyfile(".weconfig")
-we.Client.get_menu()
+print(we.Client.get_menu())
