@@ -26,5 +26,5 @@ def resp2(message):
 def resp3(message):
     return message.label
 
-
-robot.run(server='auto')
+robot.config['SERVER']='auto'
+robot.run()
