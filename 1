@@ -1,0 +1,28 @@
+Bottle v0.12.13 server starting up (using AutoServer())...
+Listening on http://127.0.0.1:8888/
+Hit Ctrl-C to quit.
+
+Traceback (most recent call last):
+  File "wechat.py", line 30, in <module>
+    robot.run()
+  File "/usr/local/python3/lib/python3.6/site-packages/werobot/robot.py", line 492, in run
+    self.wsgi.run(server=server, host=host, port=port)
+  File "/usr/local/python3/lib/python3.6/site-packages/bottle.py", line 755, in run
+    run(self, **kwargs)
+  File "/usr/local/python3/lib/python3.6/site-packages/bottle.py", line 3127, in run
+    server.run(app)
+  File "/usr/local/python3/lib/python3.6/site-packages/bottle.py", line 2979, in run
+    return sa(self.host, self.port, **self.options).run(handler)
+  File "/usr/local/python3/lib/python3.6/site-packages/bottle.py", line 2813, in run
+    serve(handler, host=self.host, port=self.port)
+  File "/usr/local/python3/lib/python3.6/site-packages/waitress/__init__.py", line 11, in serve
+    server = _server(app, **kw)
+  File "/usr/local/python3/lib/python3.6/site-packages/waitress/server.py", line 85, in create_server
+    sockinfo=sockinfo)
+  File "/usr/local/python3/lib/python3.6/site-packages/waitress/server.py", line 182, in __init__
+    self.bind_server_socket()
+  File "/usr/local/python3/lib/python3.6/site-packages/waitress/server.py", line 294, in bind_server_socket
+    self.bind(sockaddr)
+  File "/usr/local/python3/lib/python3.6/asyncore.py", line 329, in bind
+    return self.socket.bind(addr)
+OSError: [Errno 98] Address already in use
