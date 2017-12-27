@@ -1,6 +1,7 @@
 #!python3
 #coding=utf-8
-import urllib,urllib.parse,urllib.request,sys,io,json,re,random,base64,os
+import urllib,urllib.parse,urllib.request,sys,io,json,re,random,base64,os,requests,bs4
+from bs4 import BeautifulSoup
 from Crypto.Cipher import AES
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
 agents=[
@@ -20,6 +21,7 @@ agents=[
     "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11",
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_3) AppleWebKit/535.20 (KHTML, like Gecko) Chrome/19.0.1036.7 Safari/535.20",
     "Opera/9.80 (Macintosh; Intel Mac OS X 10.6.8; U; fr) Presto/2.9.168 Version/11.52",
+    "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55.0"
 ]
 
 def enc(data):
@@ -36,6 +38,26 @@ def enc(data):
     return param,encSecKey
 
 
+def get_ip():  
+    url="http://www.xicidaili.com/nn"  
+    headers = {"Accecpt":"text/html,application/xhtml+xml,application/xml",  
+                "Accept-Encoding":"gzip,deflate,sdch",  
+                "Accept-Language":"zh-CN,zh;q=0.8,en;q=0.6",  
+                "Referer":"http://www.xicidaili.com",  
+                "User-Agent":"Mozilla/5.0(Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36"  
+                }  
+    r = requests.get(url,headers=headers)  
+    soup =bs4.BeautifulSoup(r.text,'html.parser')  
+    data=soup.table.find_all("td")  
+    ip_compile=re.compile(r'<td>(\d+\.\d+\.\d+\.\d+)</td>')  
+    port_compile=re.compile(r"<td>(\d+)</td>")  
+    ip=re.findall(ip_compile,str(data))  
+    port=re.findall(port_compile,str(data))
+    res=[":".join(i) for i in zip(ip,port)]
+    #print(random.choice(res)) 
+    return res
+
+
 def get_mu(keyword='采茶纪'):
     if not keyword=="":
         if (keyword.find('*')>=0):
@@ -50,27 +72,36 @@ def get_mu(keyword='采茶纪'):
         #url="http://music.163.com/api/search/pc"
         #url='http://music.163.com/weapi/cloudsearch/get/web'
         url='http://music.163.com/api/search/get/'
+        header=[('Origin','http://music.163.com'),('User-Agent', random.choice(agents)),('Referer','http://music.163.com')]
         data={'s':keyword,'offset':'0','limit':'10','type':'1'}
         data=urllib.parse.urlencode(data).encode('utf-8')
         req=urllib.request.Request(url,data)
-        req.addheaders=[('User-Agent', random.choice(agents))]
+        req.addheaders=header
         res=urllib.request.urlopen(req).read()
         song=json.loads(res)['result']['songs'][0]
-        #print(song['artists'])
+        #print(song)
     #'''
         muid=json.loads(res)['result']['songs'][0]['id']
         data1={'ids':'['+str(muid)+']','br':3200000,'csrf_token':''}
         params,encSecKey=enc(json.dumps(data1))
         post={'params':params,'encSecKey':encSecKey}
         data1=urllib.parse.urlencode(post).encode('utf-8')
+        #print(data1)
+        #proxy={"http":random.choice(get_ip())}
+        #proxy_handler=urllib.request.ProxyHandler(proxy)
+        #opener=urllib.request.build_opener(proxy_handler)
+        #urllib.request.install_opener(opener)
         req1=urllib.request.Request(murl,data1)
-        req1.addheaders=[('User-Agent', random.choice(agents))]
-        res1=urllib.request.urlopen(req1).read()
+        req1.addheaders=header
+        #print(header)
+        res1=urllib.request.urlopen(req1).read().decode('utf-8')
+        print(res1)
         out=json.loads(res1)['data'][0]
         #op=re.findall(r"http\:\/\/(.*?)\.mp3",json.dumps(out))
         #print(out)
+        #print(params)
         info={'name':song['name'],'artists':song['artists'][0]['name'],'album':song['album']['name'],'url':out['url']}
-
+        #print(out)
         return info
     else:
         return 'error'
@@ -79,4 +110,5 @@ if __name__ == '__main__':
     #data={'ids':'['+'41500546'+']','br':3200000,'csrf_token':''}
     #data={"ids":"[484730184]","br":128000,"csrf_token":""}
     #enc(json.dumps(data))
-    get_mu("moonlight")
+    get_mu()
+    #get_ip()
