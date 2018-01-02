@@ -1,8 +1,11 @@
 #!coding=utf-8
 import time,pymysql,json,requests
+from cloud_music import cloud_music
+from Crypto.Cipher import AES
+from wxcfg import GlobalConfig
 
 def record(user,content,time):
-    config={'host':'127.0.0.1','port':3306,'user':'gxd','password':'cgd626723','db':'wechat','charset':'utf8','cursorclass':pymysql.cursors.DictCursor}
+    config=GlobalConfig.dbconf
     cnn=pymysql.connect(**config)
     with cnn.cursor() as cursor:
         sql='insert into record(openid,text,time) values (%s,%s,%s)'
@@ -12,14 +15,13 @@ def record(user,content,time):
 
 def TulingRobot(word,user):
     url = "http://www.tuling123.com/openapi/api"
-    r = requests.post(url, data={'key':"b8bb8bf591af8b522652fc2aa1e4a03a",'info':word,'userid':user})
+    r = requests.post(url, data={'key':GlobalConfig.TulingKey,'info':word,'userid':user})
     result=(json.loads((r.text))["text"])
     return result
 
 def reply_music(key):
     music=cloud_music()
     info=music.get_music(key)
-    #print(info)
     if isinstance(info,list) or isinstance(info,dict):
         title=info['artists']+' - '+info['name']
         disc=info['album']

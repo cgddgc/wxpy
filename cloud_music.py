@@ -3,6 +3,8 @@
 import urllib,urllib.parse,urllib.request,sys,io,json,re,random,base64,os,requests,bs4
 from bs4 import BeautifulSoup
 from Crypto.Cipher import AES
+from wxcfg import GlobalConfig
+
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
 
 class cloud_music():
@@ -118,7 +120,7 @@ class cloud_music():
         post={'params':params,'encSecKey':encSecKey}
         data1=urllib.parse.urlencode(post).encode('utf-8')
         #print(data1)
-        proxy={"http":"120.78.156.241:6666"}
+        proxy=GlobalConfig.Myproxy
         proxy_handler=urllib.request.ProxyHandler(proxy)
         opener=urllib.request.build_opener(proxy_handler)
         urllib.request.install_opener(opener)

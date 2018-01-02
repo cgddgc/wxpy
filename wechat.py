@@ -1,23 +1,17 @@
 #coding=utf-8
 import werobot,urllib,requests,json,re,random,urllib.parse,urllib.request,sys,base64,os,types,time,pymysql
 import util
-from wxcfg import MyConfig
-from Crypto.Cipher import AES
-from cloud_music import cloud_music
+from wxcfg import RobotConfig
 
-robot=werobot.WeRoBot(token="cgddgc")
 
-#robot.config.from_pyfile("wxcfg.py")
-#robot.config.from_object(MyConfig)
-robot.config['HOST']='0.0.0.0'
-robot.config['PORT']=8998
+robot=werobot.WeRoBot()
 
+robot.config.from_object(RobotConfig)
 
 @robot.text
 def responText(message):
     util.record(message.source,message.content,time.strftime('%Y-%m-%d %H:%M:%S'))
     key=message.content
-    music=cloud_music()
     if '~' in key or '来首' in key:
         kw=key.replace("~","").replace('来首','')
         return util.reply_music(kw)
