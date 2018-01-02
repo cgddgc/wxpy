@@ -1,8 +1,9 @@
 #coding=utf-8
-import werobot,urllib,requests,json,re,random,urllib.parse,urllib.request,sys,base64,os
+import werobot,urllib,requests,json,re,random,urllib.parse,urllib.request,sys,base64,os,types,time,pymysql
+import util
 from wxcfg import MyConfig
 from Crypto.Cipher import AES
-from cloud_music import enc,get_mu
+from cloud_music import cloud_music
 
 robot=werobot.WeRoBot(token="cgddgc")
 
@@ -12,30 +13,33 @@ robot.config['HOST']='0.0.0.0'
 robot.config['PORT']=8998
 
 
-def TulingRobot(message):
-    url = "http://www.tuling123.com/openapi/api"#'http://www.xiaodoubi.com/bot/chat.php'
-    r = requests.post(url, data={'key':"b8bb8bf591af8b522652fc2aa1e4a03a",'info':message.content,'userid':message.source})
-    result=(json.loads((r.text))["text"])
-    return result
-
 @robot.text
 def responText(message):
+    util.record(message.source,message.content,time.strftime('%Y-%m-%d %H:%M:%S'))
     key=message.content
-    if (key.find("~")==0):
-        info=get_mu(key)
-        print(info)
-        title=info['artists']+' - '+info['name']
-        disc=info['album']
-        murl='http://m10.music.126.net/20171227182732/5c7858108268bd85a07e44a8d1177c2e/ymusic/2c40/f980/8761/4c1a1719efcd49f64b504922c082a45b.mp3'#info['url']
-        res=[
-        title,
-        disc,
-        murl,
-        ]
-        print(res)
-        return res
+    music=cloud_music()
+    if '~' in key or '来首' in key:
+        kw=key.replace("~","").replace('来首','')
+        return util.reply_music(kw)
     else:
-        return TulingRobot(message)
+        return util.TulingRobot(key,message.source)
+
+@robot.voice
+def respon_voice(message):
+    key=message.recognition
+    util.record(message.source,message.recognition,time.strftime('%Y-%m-%d %H:%M:%S'))
+    if not key==None:
+        if '来首' in key or '点歌' in key:
+            kw=key.replace('来首','').replace('点歌','')
+            return util.reply_music(kw)
+        else:
+            return util.TulingRobot(key,message.source)
+    else:
+        return '听不清，大点声'
+
+@robot.subscribe
+def subscribe(message):
+    return '谢谢关注，发送~或来首+歌名点歌，歌名后可加*指定歌手，发送文字或语音可以和我尬聊'
 
 @robot.image
 def resp2(message):
