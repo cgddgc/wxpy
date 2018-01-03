@@ -43,5 +43,5 @@ def resp2(message):
 def resp3(message):
     return message.label
 
-
-robot.run()
+if __name__ == '__main__':
+    robot.run()
