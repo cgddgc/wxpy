@@ -12,24 +12,28 @@ robot.config.from_object(RobotConfig)
 def responText(message):
     util.record(message.source,message.content,time.strftime('%Y-%m-%d %H:%M:%S'))
     key=message.content
-    if '~' in key or '来首' in key:
-        kw=key.replace("~","").replace('来首','')
-        return util.reply_music(kw)
-    else:
+    des=util.get_user_want(key)
+    if des=='get_music':
+        return util.reply_music(key)
+    elif des=='get_openid':
+        return message.source
+    elif des=='chat':
         return util.TulingRobot(key,message.source)
+    else:
+        return 'unexpected error'
 
 @robot.voice
 def respon_voice(message):
     key=message.recognition
     util.record(message.source,message.recognition,time.strftime('%Y-%m-%d %H:%M:%S'))
-    if not key==None:
-        if '来首' in key or '点歌' in key:
-            kw=key.replace('来首','').replace('点歌','')
-            return util.reply_music(kw)
-        else:
-            return util.TulingRobot(key,message.source)
+    if des=='get_music':
+        return util.reply_music(key)
+    elif des=='get_openid':
+        return message.source
+    elif des=='chat':
+        return util.TulingRobot(key,message.source)
     else:
-        return '听不清，大点声'
+        return 'unexpected error'
 
 @robot.subscribe
 def subscribe(message):

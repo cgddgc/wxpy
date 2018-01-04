@@ -14,38 +14,30 @@ class cloud_music():
         self.search_url='http://music.163.com/api/search/get/'
         self.detail_url='http://music.163.com/weapi/song/enhance/player/url?csrf_token='
 
-    def enc(self,data):
-        key1="0CoJUm6Qyw8W8jud"
-        vi="0102030405060708"
-        key2="a8LWv2uAtXjzSfkQ" 
-        BS = AES.block_size
-        pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
-        encry1=AES.new(key1,AES.MODE_CBC,vi)
-        param=str(base64.b64encode(encry1.encrypt(pad(data))),encoding='utf-8')
-        encry2=AES.new(key2,AES.MODE_CBC,vi)
-        param=str(base64.b64encode(encry2.encrypt(pad(param))),encoding='utf-8')
-        encSecKey='2d48fd9fb8e58bc9c1f14a7bda1b8e49a3520a67a2300a1f73766caee29f2411c5350bceb15ed196ca963d6a6d0b61f3734f0a0f4a172ad853f16dd06018bc5ca8fb640eaa8decd1cd41f66e166cea7a3023bd63960e656ec97751cfc7ce08d943928e9db9b35400ff3d138bda1ab511a06fbee75585191cabe0e6e63f7350d6'
-        return param,encSecKey
-
-
-    def get_ip(self):  
-        url="http://www.xicidaili.com/nn"  
-        headers = {"Accecpt":"text/html,application/xhtml+xml,application/xml",  
-                    "Accept-Encoding":"gzip,deflate,sdch",  
-                    "Accept-Language":"zh-CN,zh;q=0.8,en;q=0.6",  
-                    "Referer":"http://www.xicidaili.com",  
-                    "User-Agent":"Mozilla/5.0(Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36"  
-                    }  
-        r = requests.get(url,headers=headers)  
-        soup =bs4.BeautifulSoup(r.text,'html.parser')  
-        data=soup.table.find_all("td")  
-        ip_compile=re.compile(r'<td>(\d+\.\d+\.\d+\.\d+)</td>')  
-        port_compile=re.compile(r"<td>(\d+)</td>")  
-        ip=re.findall(ip_compile,str(data))  
-        port=re.findall(port_compile,str(data))
-        res=[":".join(i) for i in zip(ip,port)]
-        #print(random.choice(res)) 
-        return res
+def enc(data):
+    key1="0CoJUm6Qyw8W8jud"
+    vi="0102030405060708"
+    seed='1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    p='010001'
+    m='00e0b509f6259df8642dbc35662901477df22677ec152b5ff68ace615bb7b725152b3ab17a876aea8a5aa76d2e417629ec4ee341f56135fccf695280104e0312ecbda92557c93870114af6c9d05c4f7f0c3685b7a46bee255932575cce10b424d813cfe4875d3e82047b97ddef52741d546b8e289dc6935b3ece0462db0a22b8e7'
+    k=[]
+    for i in range(16):
+        r=random.choice(seed)
+        k.append(r)
+    key2=''.join(k)
+    #key2="a8LWv2uAtXjzSfkQ" 
+    #pub=rsa.key.PublicKey(int(m,16),int(p,16))
+    BS = AES.block_size
+    pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
+    encry1=AES.new(key1,AES.MODE_CBC,vi)
+    param=str(base64.b64encode(encry1.encrypt(pad(data))),encoding='utf-8')
+    encry2=AES.new(key2,AES.MODE_CBC,vi)
+    param=str(base64.b64encode(encry2.encrypt(pad(param))),encoding='utf-8')
+    #f=binascii.hexlify(rsa.encrypt(key2[::-1].encode('utf-8'),pub)).decode('utf-8')
+    e=pow(int(binascii.hexlify(key2[::-1].encode('utf-8')), 16), int(p, 16), int(m, 16))
+    e=format(e, 'x').zfill(256)
+    print(key2+'\n',e)
+    return param,e
 
 
     def get_music(self,keyword='采茶纪'):
@@ -112,8 +104,8 @@ class cloud_music():
         res=urllib.request.urlopen(req).read().decode('utf-8')
         #print(res1)
         out=json.loads(res)['data'][0]
-        info={'name':song['name'],'artists':song['artists'][0]['name'],'album':song['album']['name'],'url':out['url']}
-        #print(out)
+        info={'sid':song['id'],'name':song['name'],'artists':song['artists'][0]['name'],'album':song['album']['name'],'url':out['url']}
+        #print(info)
         if not (info['url']=='' or info['url']==None):
         #    status_code=200
         #    try:
@@ -131,8 +123,15 @@ class cloud_music():
         config=GlobalConfig.dbconf
         cnn=pymysql.connect(**config)
         with cnn.cursor() as cursor:
-            sql='insert into music(name,artist,album,url,update_time) values(%s,%s,%s,%s,%s)'
-            cursor.execute(sql,(info['name'],info['artists'],info['album'],info['url'],time.strftime('%Y-%m-%d %H:%M:%S')))
+            sec='select sid from music where sid=%s and name=%s and artist=%s and album=%s'
+            cursor.execute(sec,(info['sid'],info['name'],info['artists'],info['album']))
+            result=cursor.fetchall()
+            if not len(result):
+                ins='insert into music(sid,name,artist,album,url,update_time) values(%s,%s,%s,%s,%s,%s)'
+                cursor.execute(ins,(info['sid'],info['name'],info['artists'],info['album'],info['url'],time.strftime('%Y-%m-%d %H:%M:%S')))
+            else:
+                upd='update music set url=%s,update_time=%s where sid=%s'
+                cursor.execute(upd,(info['url'],time.strftime('%Y-%m-%d %H:%M:%S'),result[0]['sid']))
         cnn.commit()
         cnn.close()
 
