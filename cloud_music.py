@@ -1,9 +1,10 @@
 #!python3
 #coding=utf-8
-import urllib,urllib.parse,urllib.request,sys,io,json,re,random,base64,os,requests,bs4,pymysql,requests,time
+import urllib,urllib.parse,urllib.request,sys,io,json,re,random,base64,os,requests,bs4,pymysql,requests,time,binascii
 from bs4 import BeautifulSoup
 from Crypto.Cipher import AES
 from wxcfg import GlobalConfig
+from builtins import pow
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
 
@@ -14,30 +15,30 @@ class cloud_music():
         self.search_url='http://music.163.com/api/search/get/'
         self.detail_url='http://music.163.com/weapi/song/enhance/player/url?csrf_token='
 
-def enc(data):
-    key1="0CoJUm6Qyw8W8jud"
-    vi="0102030405060708"
-    seed='1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    p='010001'
-    m='00e0b509f6259df8642dbc35662901477df22677ec152b5ff68ace615bb7b725152b3ab17a876aea8a5aa76d2e417629ec4ee341f56135fccf695280104e0312ecbda92557c93870114af6c9d05c4f7f0c3685b7a46bee255932575cce10b424d813cfe4875d3e82047b97ddef52741d546b8e289dc6935b3ece0462db0a22b8e7'
-    k=[]
-    for i in range(16):
-        r=random.choice(seed)
-        k.append(r)
-    key2=''.join(k)
-    #key2="a8LWv2uAtXjzSfkQ" 
-    #pub=rsa.key.PublicKey(int(m,16),int(p,16))
-    BS = AES.block_size
-    pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
-    encry1=AES.new(key1,AES.MODE_CBC,vi)
-    param=str(base64.b64encode(encry1.encrypt(pad(data))),encoding='utf-8')
-    encry2=AES.new(key2,AES.MODE_CBC,vi)
-    param=str(base64.b64encode(encry2.encrypt(pad(param))),encoding='utf-8')
-    #f=binascii.hexlify(rsa.encrypt(key2[::-1].encode('utf-8'),pub)).decode('utf-8')
-    e=pow(int(binascii.hexlify(key2[::-1].encode('utf-8')), 16), int(p, 16), int(m, 16))
-    e=format(e, 'x').zfill(256)
-    print(key2+'\n',e)
-    return param,e
+    def enc(self,data):
+        key1="0CoJUm6Qyw8W8jud"
+        vi="0102030405060708"
+        seed='1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        p='010001'
+        m='00e0b509f6259df8642dbc35662901477df22677ec152b5ff68ace615bb7b725152b3ab17a876aea8a5aa76d2e417629ec4ee341f56135fccf695280104e0312ecbda92557c93870114af6c9d05c4f7f0c3685b7a46bee255932575cce10b424d813cfe4875d3e82047b97ddef52741d546b8e289dc6935b3ece0462db0a22b8e7'
+        k=[]
+        for i in range(16):
+            r=random.choice(seed)
+            k.append(r)
+        key2=''.join(k)
+        #key2="a8LWv2uAtXjzSfkQ" 
+        #pub=rsa.key.PublicKey(int(m,16),int(p,16))
+        BS = AES.block_size
+        pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
+        encry1=AES.new(key1,AES.MODE_CBC,vi)
+        param=str(base64.b64encode(encry1.encrypt(pad(data))),encoding='utf-8')
+        encry2=AES.new(key2,AES.MODE_CBC,vi)
+        param=str(base64.b64encode(encry2.encrypt(pad(param))),encoding='utf-8')
+        #f=binascii.hexlify(rsa.encrypt(key2[::-1].encode('utf-8'),pub)).decode('utf-8')
+        e=pow(int(binascii.hexlify(key2[::-1].encode('utf-8')), 16), int(p, 16), int(m, 16))
+        e=format(e, 'x').zfill(256)
+        #print(key2+'\n',e)
+        return param,e
 
 
     def get_music(self,keyword='采茶纪'):
