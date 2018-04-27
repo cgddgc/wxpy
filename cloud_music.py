@@ -3,8 +3,9 @@
 import urllib,urllib.parse,urllib.request,sys,io,json,re,random,base64,os,requests,bs4,pymysql,requests,time,binascii
 from bs4 import BeautifulSoup
 from Crypto.Cipher import AES
-from wxcfg import GlobalConfig
+from wxcfg import GlobalConfig,DefaultResponseMsg
 from builtins import pow
+
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')
 
@@ -41,7 +42,7 @@ class cloud_music():
         return param,e
 
 
-    def get_music(self,keyword='采茶纪'):
+    def get_music(self,keyword=DefaultResponseMsg.song):
         #code=''
         art=''
         sname=keyword
@@ -76,12 +77,12 @@ class cloud_music():
                     code=self.get_info(song['songs'][i])
                     #print(code)
                 elif ('songCount' in song and song['songCount']==0):
-                    code='什么都没找到，换一首吧'
+                    code=DefaultResponseMsg.musicNotFound
 
                 else:
-                    code='未知错误'     
+                    code=DefaultResponseMsg.unexpectedError     
             else:
-                code='关键字不能为空'
+                code=DefaultResponseMsg.nullKey
         except Exception as e:
             code=e
         #print(code)
@@ -89,35 +90,43 @@ class cloud_music():
 
 
     def get_info(self,song):
-        muid=song['id']
-        data1={'ids':'['+str(muid)+']','br':3200000,'csrf_token':''}
-        params,encSecKey=self.enc(json.dumps(data1))
-        post={'params':params,'encSecKey':encSecKey}
-        data1=urllib.parse.urlencode(post).encode('utf-8')
-        #print(data1)
-        proxy=GlobalConfig.Myproxy
-        proxy_handler=urllib.request.ProxyHandler(proxy)
-        opener=urllib.request.build_opener(proxy_handler)
-        urllib.request.install_opener(opener)
-        req=urllib.request.Request(self.detail_url,data1)
-        req.addheaders=self.header
-        #print(header)
-        res=urllib.request.urlopen(req).read().decode('utf-8')
-        #print(res1)
-        out=json.loads(res)['data'][0]
-        info={'sid':song['id'],'name':song['name'],'artists':song['artists'][0]['name'],'album':song['album']['name'],'url':out['url']}
-        #print(info)
-        if not (info['url']=='' or info['url']==None):
-        #    status_code=200
-        #    try:
-        #        res=requests.get(info['url'])
-        #        status_code=res.status_code
-        #    except Exception as e:
-        #        print(e)
-        #    if not (status_code==404 or status_code=='404'):
-            self.record_music(info)
-        else:
-            pass
+        try:
+            muid=song['id']
+            data1={'ids':'['+str(muid)+']','br':3200000,'csrf_token':''}
+            params,encSecKey=self.enc(json.dumps(data1))
+            post={'params':params,'encSecKey':encSecKey}
+            data1=urllib.parse.urlencode(post).encode('utf-8')
+            #print(data1)
+            proxy=GlobalConfig.Myproxy
+            proxy_handler=urllib.request.ProxyHandler(proxy)
+            opener=urllib.request.build_opener(proxy_handler)
+            urllib.request.install_opener(opener)
+            req=urllib.request.Request(self.detail_url,data1)
+            req.addheaders=self.header
+            #print(header)
+            res=urllib.request.urlopen(req).read().decode('utf-8')
+            #print(res1)
+            if 'data' in json.loads(res):
+                out=json.loads(res)['data'][0]
+                info={'sid':song['id'],'name':song['name'],'artists':song['artists'][0]['name'],'album':song['album']['name'],'url':out['url']}
+                #print(info)
+                if not (info['url']=='' or info['url']==None):
+                #    status_code=200
+                #    try:
+                #        res=requests.get(info['url'])
+                #        status_code=res.status_code
+                #    except Exception as e:
+                #        print(e)
+                #    if not (status_code==404 or status_code=='404'):
+                    self.record_music(info)
+                else:
+                    pass
+            elif json.loads(res)['msg']=='Cheating':
+                return 'API Error'
+            else:
+                return 'Unknown Error'
+        except Exception as e:
+            info=e
         return info
 
     def record_music(self,info):

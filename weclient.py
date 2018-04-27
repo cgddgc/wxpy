@@ -14,10 +14,18 @@ ip=we.client.get_ip_list()
 a=requests.get('https://api.weixin.qq.com/cgi-bin/template/get_industry?access_token='+token)
 print(token,ip['ip_list'][0],a)
 '''
-def sent_notice(arg1,arg2):
-    openid=we.client.get_followers()['data']['openid'][0]
-    tid='z5L8q2R1XUlWUNk9y-dwFOvdNx0dfqHIb9JmXILNKps'
-    data={'first':{'value':'Warming!\n\n','color':'#FF0000'},'keyword1':{'value':arg1+'\n','color':'#FF0000'},'keyword2':{'value':arg2+'\n','color':'#FF0000'},'remark':{'value':'\n注意','color':'#FF0000'}}
-    url='https://blog.cgddgc.cn'
+def sent_notice(arg1,k='msg'):
+    kind={'server':'a_K0T4-Xu0UtEfBCfcKfX8F6fkpN2sPXsT30Wmpm-B4','notice':'z5L8q2R1XUlWUNk9y-dwFOvdNx0dfqHIb9JmXILNKps','msg':'jl0Dh49b7gj-hPWmKDxAKAyWIKSbf0SFFoxNWAXPrOU'}
+    #openid=we.client.get_followers()['data']['openid'][0]
+    #openid='oVdu6swIuCYPoiKN6NGXz2UAxmmo'
+    openid='oVdu6swIuCYPoiKN6NGXz2UAxmmo'
+    tid=kind[k]
+    #data={'first':{'value':'Warming!\n\n','color':'#FF0000'},'keyword1':{'value':arg1+'\n','color':'#FF0000'},'keyword2':{'value':k+'\n','color':'#FF0000'},'remark':{'value':'\n注意','color':'#FF0000'}}
+    #data={'first':{'value':'访问情况如下：\n','color':'#000000'},'keyword1':{'value':arg1+'\n','color':'#000000'},'remark':{'value':'\nEND','color':'#000000'}}
+    data={'first':{'value':arg1,'color':'#000000'}}
+    url='http://wxpy.cgddgc.cn/'
     res=we.client.send_template_message(openid,tid,data,url)
-    print(openid,res)
+    #print(res)
+
+if __name__ == '__main__':
+    sent_notice('hello','server')
